@@ -1,0 +1,51 @@
+@import './_mixins.scss';
+
+html,body {
+    width: 100%;
+    min-height: 100%;
+    background-color: #e8f0fe;
+}
+
+.disable-select {
+    user-select: none; /* supported by Chrome and Opera */
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+.App {
+
+    display: block;
+    margin: 0 auto;
+    width: 400px;
+    height: 450px;
+    overflow: hidden;
+    box-sizing: border-box;
+    border:1px solid #dedede;
+    background-color: #fff;
+    @include center-absolute;
+    @include border-radius(4px);
+
+    .app-wrapper {
+
+        width: 800px;
+        height: 400px;
+        @include transition(all ease .3s);
+
+        &.play{
+            margin-left: -400px;
+        }
+
+        .main-view, .game  {
+
+            float: left;
+            padding: 50px;
+            width: 400px;
+            height: inherit;
+            display: block;
+            box-sizing: border-box;
+        }
+    }
+
+}

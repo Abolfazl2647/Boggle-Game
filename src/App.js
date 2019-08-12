@@ -1,26 +1,56 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React , { useState } from 'react';
+import Table from './Components/Table';
+import Main from './Components/Main';
+import Helper from './helper.js';
+import './App.scss';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// TODO: remove Duplication 
+
+
+const App = () => {
+
+	const [Table_Cells, setTable_Cells] = useState(Helper.generate_random_aplphabet());
+	const [draging, setDraging] = useState(false);
+	const [View, setView] = useState(false);
+	// Declare a new state variable, which we'll call "count"
+	
+	let temp = "";
+	const handleChar = (char) => {
+		temp += char;
+		console.log(temp);
+	}
+
+	const playGame = () => {
+		setView(true);
+		newGame();
+	}
+
+	const newGame = () => {
+		setTable_Cells(Helper.generate_random_aplphabet());
+	}
+
+	const mouseDown = () => { setDraging(true);}
+	const mouseUp = () => { setDraging(false);}
+
+	return (
+		<div className="App" onMouseDown={()=> {mouseDown(true)}} onMouseUp={() => {mouseUp(false)}}>
+			<div className={ (View ? 'play' : null ) + " app-wrapper"}>
+				<section className="main-view">
+					<Main newGame={playGame} />
+				</section>
+				<section className="game-view">
+					<Table 
+						draging={draging}
+						data={Table_Cells} 
+						handleChar={handleChar} 
+						setView={setView}
+						newGame={newGame} />
+				</section>
+			</div>
+		</div>
+	);
 }
+
+
 
 export default App;
