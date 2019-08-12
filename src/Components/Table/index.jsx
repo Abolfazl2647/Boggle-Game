@@ -23,6 +23,7 @@ const Table = (props) => {
 
 	const dragEnd = (pos) => {
 		// check in DB
+		props.handleChar(string);
 		setString("");
 		// posList = [];
 	}
@@ -35,24 +36,21 @@ const Table = (props) => {
 		}
 	}
 
+	// only move Plus Sign === up,down,left,right
 	const directionsAllowed = (pos,id) => {
 		return (props.draging && (pos.rows === lasPos.rows || pos.cols === lasPos.cols));
 	}
 
+	// check to see if we select this cell before
 	const checkSelectedList = (id) => {
 		return ( posList.indexOf(id) !== -1 );
 	}
 
-	// useEffect(() => {
-	// 	// Update the document title using the browser API
-	// 	console.log('String = ', string);
-	// 	console.log('Draging = ', props.draging);
-	// });
 
 	return (
 		<div className="game">
 			<div className="table">
-				{(props.data) ? props.data.map((item,index) => {
+				{(props.data) ? props.data.map((item) => {
 					if ( col === 5 ) {
 						col = 0;
 						row++;

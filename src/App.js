@@ -2,6 +2,8 @@ import React , { useState } from 'react';
 import Table from './Components/Table';
 import Main from './Components/Main';
 import Helper from './helper.js';
+import Trie from './Trie.js';
+
 import './App.scss';
 
 // TODO: remove Duplication 
@@ -14,10 +16,15 @@ const App = () => {
 	const [View, setView] = useState(false);
 	// Declare a new state variable, which we'll call "count"
 	
-	let temp = "";
-	const handleChar = (char) => {
-		temp += char;
-		console.log(temp);
+	const handleChar = (string) => {
+
+		console.log(Trie);
+
+		if ( Trie.contains(string) ) {
+			console.log('Yes')
+		} else {
+			console.log('No')
+		}
 	}
 
 	const playGame = () => {
