@@ -60,7 +60,7 @@ function TrieNode(key) {
       node = node.children[word[i]];
       
       // finally, we check to see if it's the last word.
-      if (i == word.length-1) {
+      if (i === word.length-1) {
         // if it is, we set the end flag to true.
         node.end = true;
       }
@@ -129,12 +129,12 @@ function TrieNode(key) {
   // instantiate our trie
   var trie = new Trie();
   
-//   // insert few values
+//   insert few values
 //   trie.insert("hello");
 //   trie.insert("helium");
 
   for ( let i=0; i < DB.word.length; i++ ) {
-    trie.insert(DB.word[i]);
+    trie.insert(DB.word[i].trim(' '));
   }
 
   export default trie;

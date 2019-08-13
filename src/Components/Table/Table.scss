@@ -27,7 +27,14 @@ $margin:5px;
         }
 
         &.active {
+            color: #fff;
             background: #1ea1f2;
+        }
+
+        &.bingo {
+            color: #fff;
+            background-color: #555;
+            border: 1px solid #111;
         }
     }
 }

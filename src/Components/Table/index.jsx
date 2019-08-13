@@ -1,13 +1,15 @@
 import React, {useState} from 'react';
+import Trie from '../../Trie.js';
+import Helper from '../../helper.js';
 import './Table.scss';
 
-let posList = [];
+let selectedList = [];
 const Table = (props) => {
 
 	let [lasPos, setLastPos] = useState({rows: null, cols: null, value:null});
 	let [string, setString] = useState("");
+	let [answers , setAnswers] = useState([]);
 	let row = 0, col = 0;
-	
 
 	const help = () => {
 		console.log('Help');
@@ -16,55 +18,87 @@ const Table = (props) => {
 	}
 
 	const dragStart = (pos,id) => {
+		if (selectedList.indexOf(id) !== -1) return;
 		setString(string += pos.value);
-		posList.push(id);
 		setLastPos(pos);
+		selectedList.push(id);
 	}
 
 	const dragEnd = (pos) => {
 		// check in DB
-		props.handleChar(string);
-		setString("");
-		// posList = [];
+		if ( string.length >= 2 ) {
+			if ( Trie.contains(string) ) {
+				let array = answers;
+					array.push({value: string, ids:selectedList });
+				setAnswers(array);
+			} else {
+				setString(""); 
+				selectedList = [];
+			}
+		}
+
+		console.log(answers);
 	}
 
 	const hoverOverCells = (pos,id) => {
-		if (directionsAllowed(pos)) {
-			setString(string += pos.value);
-			posList.push(id);
-			setLastPos(pos);
+		if ( props.draging  ) {
+			if (selectedList.indexOf(id) === -1) {
+				if (directionsAllowed(pos,id)) {
+					setString(string += pos.value);
+					selectedList.push(id);
+					setLastPos(pos);
+				}
+			}
 		}
+		
 	}
 
 	// only move Plus Sign === up,down,left,right
-	const directionsAllowed = (pos,id) => {
-		return (props.draging && (pos.rows === lasPos.rows || pos.cols === lasPos.cols));
+	const directionsAllowed = (pos) => {
+		return (pos.rows === lasPos.rows || pos.cols === lasPos.cols);
 	}
 
 	// check to see if we select this cell before
 	const checkSelectedList = (id) => {
-		return ( posList.indexOf(id) !== -1 );
+		return ( selectedList.indexOf(id) !== -1 );
 	}
 
+	const checkAnswers = (id) => {
+		if (answers.length) {
+			for(let j=0 ; j < answers.length ; j++) {
+				if ( answers[j].ids ) {
+					for ( let i=0; i < answers[j].ids.length ;i++ ) {
+						if ( answers[j].ids[i] === id ) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+	}
 
 	return (
 		<div className="game">
 			<div className="table">
 				{(props.data) ? props.data.map((item) => {
 					if ( col === 5 ) {
-						col = 0;
-						row++;
+						col = 0;row++;
 					}
 					let pos = {rows: row, cols: col, value:item.value};
 					col++;
 					return ((item.value) ? <div 
-										key={item.id} 
-										unselectable="on"
-										className={ (checkSelectedList(item.id) ? " active " : null) + " cell disable-select" }
-										onMouseOver={()=> {hoverOverCells(pos,item.id)}}
-										onMouseDown={()=> {dragStart(pos,item.id)}}
-										onMouseUp={() => {dragEnd(pos)}} >{item.value}</div> : null);
+												key={item.id} 
+												unselectable="on"
+												className={ ( checkAnswers(item.id) ? " bingo " : "" ) + (checkSelectedList(item.id) ? " active " : "") + " cell disable-select"}
+												onMouseOver={()=> {hoverOverCells(pos, item.id)}}
+												onMouseDown={()=> {dragStart(pos, item.id)}}
+												onMouseUp={() => {dragEnd(pos)}} >{item.value}</div> : null);
 				}) : null}
+			</div>
+			<div className="answers">
+				{answers.map((item,index) => {
+					return <span key={index}>{item.value}</span>
+				})}
 			</div>
 			<div className="actions">
 				<span>{string}</span>
