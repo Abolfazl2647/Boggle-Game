@@ -10,6 +10,12 @@ html,body {
     font-family: 'IRANSans';
 }
 
+.blur {
+
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+}
+
 body {
 
     position: relative;
@@ -38,10 +44,6 @@ body {
         .container,.row,.col-4,.col-8 {
             height: 100%;
         }
-    }
-
-    .game-view {
-
     }
 
     nav {

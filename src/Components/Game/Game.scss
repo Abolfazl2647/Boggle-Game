@@ -4,6 +4,7 @@ $cell_size: 50px;
 $margin:5px;
 
 // e2dfee border color
+
 .Game-Wrapper {
 
     position: relative;
@@ -21,6 +22,7 @@ $margin:5px;
             width: 50px;
             height: 50px;
             margin: 10px;
+            cursor: pointer;
             line-height: 50px;
             text-align: center;
             display: inline-block;

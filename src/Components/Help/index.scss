@@ -1,0 +1,80 @@
+@import '../../_mixins.scss';
+
+.Modal-Wrapper {
+
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    display: none;
+
+    &.show {display: block}
+
+    .Modal {
+
+        background-color: #ffffff;
+        @include box-shadow(1px 1px 40px 0 #b9bcd2);
+        @include border-radius(10px);
+        @include center-absolute;
+        max-width: 320px;
+        width: 320px;
+        z-index: 101;
+        margin: 0;
+        padding:2em;
+
+        p {
+            height: 40px;
+            width: 100%;
+            direction: rtl;
+            color: #567dd8;
+            margin-bottom: 1em;
+            border-bottom: 2px solid #567dd8;
+
+            span { 
+                float: right; 
+                margin-right: 10px;
+                line-height: 30px;
+            }
+
+            i {
+                float: right;
+                line-height: 30px;
+                height: 30px;
+                width: 30px;
+                text-align: center;
+            }
+        }
+
+        ul {
+
+            list-style: none;
+            padding-right: 1em;
+            margin-top: 2em;
+
+            li {
+
+                display: block;
+                width: 100%;
+                float: right;
+                
+                span { 
+                    color: #333333;
+                    float: right; 
+                    margin-right: 10px;
+                    line-height: 30px;
+                }
+                
+                i {
+                    float: right;
+                    line-height: 30px;
+                    height: 30px;
+                    width: 30px;
+                    color: #567dd8;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
