@@ -23,11 +23,16 @@ $margin:5px;
             height: 50px;
             margin: 10px;
             cursor: pointer;
+            color: #567dd8;
             line-height: 50px;
             text-align: center;
             display: inline-block;
             border: 2px solid #567dd8;
             @include border-radius(10px);
+
+            &.active {
+                background-color: #cfdcfc;
+            }
         }
     }
 }
