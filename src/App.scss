@@ -1,9 +1,94 @@
 @import './_mixins.scss';
 
 html,body {
+
+    margin: 0;
     width: 100%;
+    height: 100%;
+    outline: none;
     min-height: 100%;
-    background-color: #e8f0fe;
+    font-family: 'IRANSans';
+}
+
+body {
+
+    position: relative;
+    height: inherit;
+    width: 100%;
+    padding: 2em;
+    box-sizing: border-box;
+    background: #6224ff;
+
+    #root {
+        z-index: 1;
+        content: 0;
+        top: 2em;
+        left: 2em;
+        background: #f7fbff;
+        position: absolute;
+        width: calc(100% - 4em);
+        height: calc(100% - 4em);
+        @include border-radius(50px);
+    }
+
+    .App {
+
+        height: 100%;
+        
+        .container,.row,.col-4,.col-8 {
+            height: 100%;
+        }
+    }
+
+    .game-view {
+
+    }
+
+    nav {
+
+        height: 100%;
+
+        ul.actions {
+            @include center-absolute;
+            list-style: none;
+            li {
+                display: block;
+            }
+        }
+
+        button {
+
+            cursor: pointer;
+            background-color: #638de9;
+            padding: 5px 10px;
+            min-width: 130px;
+            color: #fff;
+            border: none;
+            outline: none;
+            font-size: 13px;
+            height: 40px;
+            margin: 5px;
+            @include border-radius(40px);
+
+            span {
+                float: right;
+                height: 30px;
+                margin-right: 10px;
+                line-height: 30px !important;
+            }
+
+            i {
+                width: 30px;
+                height: 30px;
+                float: right;
+                text-align: center;
+                line-height: 30px !important;
+                cursor: pointer;
+                @include border-radius(100%);
+                background-color: #567dd8;
+            }
+        }
+    }
 }
 
 .disable-select {
@@ -12,40 +97,4 @@ html,body {
    -khtml-user-select: none; /* Konqueror HTML */
    -moz-user-select: none; /* Firefox */
    -ms-user-select: none; /* Internet Explorer/Edge */
-}
-
-.App {
-
-    display: block;
-    margin: 0 auto;
-    width: 400px;
-    height: 450px;
-    overflow: hidden;
-    box-sizing: border-box;
-    border:1px solid #dedede;
-    background-color: #fff;
-    @include center-absolute;
-    @include border-radius(4px);
-
-    .app-wrapper {
-
-        width: 800px;
-        height: 400px;
-        @include transition(all ease .3s);
-
-        &.play{
-            margin-left: -400px;
-        }
-
-        .main-view, .game  {
-
-            float: left;
-            padding: 50px;
-            width: 400px;
-            height: inherit;
-            display: block;
-            box-sizing: border-box;
-        }
-    }
-
 }

@@ -1,0 +1,31 @@
+@import '../../_mixins.scss';
+
+$cell_size: 50px;
+$margin:5px;
+
+// e2dfee border color
+.Game-Wrapper {
+
+    position: relative;
+    height: 100%;
+    width: 100%;
+
+    .Game {
+
+        width: 350px;
+        height: 350px;
+        @include center-absolute;
+    
+        .cell {
+    
+            width: 50px;
+            height: 50px;
+            margin: 10px;
+            line-height: 50px;
+            text-align: center;
+            display: inline-block;
+            border: 2px solid #567dd8;
+            @include border-radius(10px);
+        }
+    }
+}

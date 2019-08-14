@@ -1,55 +1,74 @@
-import React , { useState } from 'react';
-import Table from './Components/Table';
-import Main from './Components/Main';
+import React , { Component } from 'react';
+import Game from './Components/Game';
+import Modal from './Components/Help';
 import Helper from './helper.js';
-
-
 import './App.scss';
 
 // TODO: remove Duplication 
 
+export default class Boggle extends Component {
 
-const App = () => {
+	constructor() {
+		super();
 
-	const [Table_Cells, setTable_Cells] = useState(Helper.generate_random_aplphabet());
-	const [draging, setDraging] = useState(false);
-	const [View, setView] = useState(false);
-	// Declare a new state variable, which we'll call "count"
-
-	const playGame = () => {
-		setView(true);
-		newGame();
+		this.handleMouseDown = this.handleMouseDown.bind(this);
+		this.handleMouseUp = this.handleMouseUp.bind(this);
+		this.playGame = this.playGame.bind(this);
 	}
 
-	
-
-	const newGame = () => {
-		let kir = Helper.generate_random_aplphabet();
-		setTable_Cells(kir);
-		console.log(Helper.find_answer(kir))
+	state = {
+		needHelp:false,
+		draging: false,
+		availableAnswers:[],
+		tableValues:[]
 	}
 
-	const mouseDown = () => { setDraging(true);}
-	const mouseUp = () => { setDraging(false);}
+	handleHelp() {
+		this.setState({needHelp: !this.state.needHelp})
+	}
 
-	return (
-		<div className="App" onMouseDown={()=> {mouseDown(true)}} onMouseUp={() => {mouseUp(false)}}>
-			<div className={ (View ? 'play' : null ) + " app-wrapper"}>
-				<section className="main-view">
-					<Main newGame={playGame} />
-				</section>
-				<section className="game-view">
-					<Table 
-						draging={draging}
-						data={Table_Cells} 
-						setView={setView}
-						newGame={newGame} />
-				</section>
+	handleMouseDown() {
+		this.setState({draging:true})
+	}
+
+	handleMouseUp() {
+		this.setState({draging:false})
+	}
+
+	playGame() {
+		let RandomValues = Helper.generate_random_aplphabet();
+		let Answers = Helper.find_answer(RandomValues);
+		this.setState({
+			tableValues: RandomValues,
+			availableAnswers: Answers 
+		});
+	}
+
+	componentDidMount() {
+		this.playGame();
+	}
+
+	render() { 
+		return (
+			<div className="App" onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp}>
+				<div className="container">
+					<div className="row">
+						<div className="col-4">
+							<nav>
+								<ul className="actions">
+									<li><button className="help"><i className="fa fa-exclamation" aria-hidden="true"></i><span> راهنما </span></button></li>
+									<li><button className="new" onClick={this.playGame}><i className="fa fa-gamepad" aria-hidden="true"></i><span> بازی جدید </span></button></li>
+									<li><button className="back"><i className="fa fa-power-off" aria-hidden="true"></i><span> خروج </span></button></li>
+								</ul>
+							</nav>
+						</div>
+						<div className="col-8">
+							<Game draging={this.state.draging} tableValues={this.state.tableValues} />
+							<Modal visibility={this.state.needHelp} Answers={this.state.availableAnswers} />
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
-	);
+		);
+	}
 }
-
-
-
-export default App;
