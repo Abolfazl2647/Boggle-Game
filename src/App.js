@@ -41,8 +41,7 @@ export default class Boggle extends Component {
 	playGame() {
 		let RandomValues = Helper.generate_random_aplphabet();
 		let Answers = Helper.find_answer(RandomValues);
-		// we need at least one word to be found
-		//console.log(Answers);
+		// we need at least ten word to be found
 		if ( Answers.length < 10 ) {
 			this.playGame();
 			return;
