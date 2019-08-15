@@ -20,6 +20,8 @@ $margin:5px;
         max-width: 300px;
         display: block;
         margin: 0 auto;
+        padding: 0 10px;
+        box-sizing: border-box;
         position: relative;
 
         p.currentString {

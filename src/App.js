@@ -67,25 +67,21 @@ export default class Boggle extends Component {
 	render() { 
 		return (
 			<div className="App" onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp}>
-				<div className={((this.state.needHelp) ? " blur " : "" ) + "container" }>
-					<div className="row">
-						<div className="col-4">
-							<nav>
-								<ul className="actions">
-									<li><button className="help" onClick={this.handleHelp} ><i className="fa fa-exclamation" aria-hidden="true"></i><span> راهنما </span></button></li>
-									<li><button className="new" onClick={this.playGame}><i className="fa fa-gamepad" aria-hidden="true"></i><span> بازی جدید </span></button></li>
-								</ul>
-							</nav>
-						</div>
-						<div className="col-8">
-							<Game 
-								draging={this.state.draging} 
-								tableValues={this.state.tableValues} 
-								Answers={this.state.availableAnswers}
-								userPickups={this.state.userAnswers}
-								userAnswers={this.handleUserAnswers} />
-						</div>
+				<div className={((this.state.needHelp) ? " blur " : "" )}>
+					<div className="Menu">
+						<nav>
+							<ul className="actions">
+								<li><button className="new" onClick={this.playGame}><i className="fa fa-gamepad" aria-hidden="true"></i><span> بازی جدید </span></button></li>
+								<li><button className="help" onClick={this.handleHelp} ><i className="fa fa-exclamation" aria-hidden="true"></i><span> راهنما </span></button></li>
+							</ul>
+						</nav>
 					</div>
+					<Game 
+						draging={this.state.draging} 
+						tableValues={this.state.tableValues} 
+						Answers={this.state.availableAnswers}
+						userPickups={this.state.userAnswers}
+						userAnswers={this.handleUserAnswers} />
 				</div>
 				<Modal visibility={this.state.needHelp} ToggleModal={this.ToggleModal} Answers={this.state.availableAnswers} />
 			</div>

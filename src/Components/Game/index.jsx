@@ -72,7 +72,6 @@ export default class Game extends Component {
 
 	end() {
 		let answerIds = [...this.state.answerIds];
-
 		if ( Trie.contains(this.state.string) ) {
 			answerIds = answerIds.concat(this.state.selectedIds);
 			this.props.userAnswers({

@@ -48,51 +48,64 @@ body {
         }
     }
 
-    nav {
+    .Menu {
 
-        height: 100%;
+        margin: 0 auto;
+        margin-top: 2em;
+        max-width: 300px;
 
-        ul.actions {
-            @include center-absolute;
-            list-style: none;
-            li {
-                display: block;
+        nav {
+
+            height: 100%;
+
+            ul.actions {
+
+                padding: 0;
+                margin: 0;
+                list-style: none;
+
+                li {  display: inline-block; }
+
+                li:nth-child(1) { float: left; }
+                li:nth-child(1) { float: right; }
             }
-        }
-
-        button {
-
-            cursor: pointer;
-            background-color: #638de9;
-            padding: 5px 10px;
-            min-width: 130px;
-            color: #fff;
-            border: none;
-            outline: none;
-            font-size: 13px;
-            height: 40px;
-            margin: 5px;
-            @include border-radius(40px);
-
-            span {
-                float: right;
-                height: 30px;
-                margin-right: 10px;
-                line-height: 30px !important;
-            }
-
-            i {
-                width: 30px;
-                height: 30px;
-                float: right;
-                text-align: center;
-                line-height: 30px !important;
+    
+            button {
+    
                 cursor: pointer;
-                @include border-radius(100%);
-                background-color: #567dd8;
+                background-color: #638de9;
+                padding: 5px 10px;
+                min-width: 130px;
+                color: #fff;
+                border: none;
+                outline: none;
+                font-size: 13px;
+                height: 40px;
+                margin: 5px;
+                @include border-radius(40px);
+    
+                span {
+                    float: right;
+                    height: 30px;
+                    margin-right: 10px;
+                    line-height: 30px !important;
+                }
+    
+                i {
+                    width: 30px;
+                    height: 30px;
+                    float: right;
+                    text-align: center;
+                    line-height: 30px !important;
+                    cursor: pointer;
+                    @include border-radius(100%);
+                    background-color: #567dd8;
+                }
             }
         }
     }
+
+
 }
 
 .disable-select {
