@@ -10,6 +10,10 @@ $margin:5px;
     position: relative;
     height: 100%;
     width: 100%;
+    -webkit-user-select: none;
+    -moz-user-select: -moz-none;
+    -ms-user-select: none;
+    user-select: none;
 
     .Game {
 
@@ -19,6 +23,7 @@ $margin:5px;
     
         .cell {
     
+            z-index: 0;
             width: 50px;
             height: 50px;
             margin: 10px;
@@ -26,12 +31,28 @@ $margin:5px;
             color: #567dd8;
             line-height: 50px;
             text-align: center;
+            position: relative;
             display: inline-block;
             border: 2px solid #567dd8;
             @include border-radius(10px);
 
+            &::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 48px;
+                height: 48px;
+                z-index: 1;
+            }
+
             &.active {
                 background-color: #cfdcfc;
+            }
+
+            &.answer {
+                color: #fff;
+                background-color:#d46bb3;
             }
         }
     }

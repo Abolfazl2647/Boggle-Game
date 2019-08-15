@@ -1,8 +1,8 @@
 import Trie from './Trie.js';
-let visited = [[false,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false]];
-let iString = "";
 
+let iString = "";
 export default {
+    visited:[[false,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false],[false,false,false,false,false]],
     main_alphabet: ["ا","ب","پ","ت","ث","ج","چ","ح","خ","د","ذ","ر","ز","ژ","س","ش","ص","ض","ط","ظ","ع","غ","ف","ق","ک","گ","ل","م","ن","و","ه","ی"],
     generate_random_aplphabet: function (){
         let array = [];
@@ -12,6 +12,7 @@ export default {
         return array;
     },
     find_answer : function (array) {
+        let self = this;
         let row = 0;
         let col = 0;
         let final_answers = [];
@@ -26,10 +27,9 @@ export default {
             }    
         }
     
-    
         function backtrack(row,col){
     
-            visited[row][col] = true;
+            self.visited[row][col] = true;
             iString += array[((row*5) + col)].value;
     
             if ( Trie.find(iString).length > 1) {
@@ -37,32 +37,29 @@ export default {
                     final_answers.push(iString);
                 }
     
-                if ( row-1 >= 0  && !visited[row-1][col]) {
+                if ( row-1 >= 0  && !self.visited[row-1][col]) {
                     // left
                     backtrack(row-1,col);
                 }
         
-                if ( row+1 < 5 && !visited[row+1][col]) {
+                if ( row+1 < 5 && !self.visited[row+1][col]) {
                     // right
                     backtrack(row+1,col);
                 }
         
-                if ( col-1 >= 0 && !visited[row][col-1]) {
+                if ( col-1 >= 0 && !self.visited[row][col-1]) {
                     // up
                     backtrack(row,col-1);
                 }
         
-                if ( col+1 > 5 && !visited[row][col+1]) {
+                if ( col+1 > 5 && !self.visited[row][col+1]) {
                     // down
                     backtrack(row,col+1);
                 }
             }
-            // console.log(iString)
-    
             iString = iString.slice(0, iString.length-1);
-            visited[row][col] = false;
+            self.visited[row][col] = false;
         }
-    
         return final_answers;
     },
     uniqueid: function () {
@@ -76,7 +73,6 @@ export default {
                 idstr += String.fromCharCode(ascicode);
             }
         } while (idstr.length < 32);
-    
         return idstr;
     }
 }
