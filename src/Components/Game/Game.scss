@@ -15,18 +15,85 @@ $margin:5px;
     -ms-user-select: none;
     user-select: none;
 
+    .Game-Header {
+
+        max-width: 300px;
+        display: block;
+        margin: 0 auto;
+        position: relative;
+
+        p.currentString {
+
+            min-height: 50px;
+            margin: 2em 0;
+            line-height: 50px;
+            text-align: center;
+            width: 100%;
+            color: #567dd8;
+        }
+
+        label.total-words {
+
+            top: 0;
+            right: 0;
+            margin: 0;
+            width: 100px;
+            height: 20px;
+            font-size: 12px;
+            direction: rtl;
+            position: absolute;
+
+            span { float: right; }
+            span.num {margin-right: 5px;}
+        }
+    }
+    
+
+    div.answer-list {
+
+        width: 300px;
+        margin: 1em auto 0 auto;
+        border-top:2px solid #567dd8;
+
+        span {
+
+            float: right;
+            margin-left: 10px;
+            text-align: center;
+            display: inline-block;
+            color: lightseagreen;
+
+            span { 
+                float: right;
+                color: #567dd8;
+                margin-right: 3px;
+                line-height: 30px;
+            }
+            
+            i {
+                float: right;
+                width: 30px;
+                height: 30px;
+                line-height: 30px;
+                color: #567dd8;
+                text-align: center;
+            }
+        }
+    }
+
     .Game {
 
-        width: 350px;
-        height: 350px;
-        @include center-absolute;
-    
+        width: 300px;
+        height: 300px;
+        display: block;
+        margin: 0 auto;
+
         .cell {
     
             z-index: 0;
             width: 50px;
             height: 50px;
-            margin: 10px;
+            margin: 5px;
             cursor: pointer;
             color: #567dd8;
             line-height: 50px;
@@ -52,7 +119,7 @@ $margin:5px;
 
             &.answer {
                 color: #fff;
-                background-color:#d46bb3;
+                background-color:#567dd8;
             }
         }
     }

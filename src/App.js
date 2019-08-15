@@ -66,7 +66,7 @@ export default class Boggle extends Component {
 							</nav>
 						</div>
 						<div className="col-8">
-							<Game draging={this.state.draging} tableValues={this.state.tableValues} />
+							<Game draging={this.state.draging} tableValues={this.state.tableValues} Answers={this.state.availableAnswers}/>
 						</div>
 					</div>
 				</div>

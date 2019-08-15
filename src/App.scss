@@ -10,6 +10,8 @@ html,body {
     font-family: 'IRANSans';
 }
 
+input,textarea,button {outline: none !important;}
+
 .blur {
 
     filter: blur(3px);
