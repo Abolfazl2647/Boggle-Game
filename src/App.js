@@ -11,6 +11,7 @@ export default class Boggle extends Component {
 	constructor() {
 		super();
 
+		this.handleUserAnswers = this.handleUserAnswers.bind(this);
 		this.handleMouseDown = this.handleMouseDown.bind(this);
 		this.handleMouseUp = this.handleMouseUp.bind(this);
 		this.ToggleModal = this.ToggleModal.bind(this);
@@ -22,6 +23,7 @@ export default class Boggle extends Component {
 		needHelp:false,
 		draging: false,
 		availableAnswers:[],
+		userAnswers:[],
 		tableValues:[]
 	}
 
@@ -40,11 +42,23 @@ export default class Boggle extends Component {
 		let RandomValues = Helper.generate_random_aplphabet();
 		let Answers = Helper.find_answer(RandomValues);
 		// we need at least one word to be found
-		if ( !Answers.length ) this.playGame();
+		//console.log(Answers);
+		if ( Answers.length < 10 ) {
+			this.playGame();
+			return;
+		}
+
 		this.setState({
 			tableValues: RandomValues,
-			availableAnswers: Answers 
+			availableAnswers: Answers,
+			userAnswers:[]
 		});
+	}
+
+	handleUserAnswers(obj) {
+		let userAnswers = [...this.state.userAnswers];
+			userAnswers.push(obj);
+		this.setState({userAnswers});
 	}
 
 	componentDidMount() {
@@ -61,12 +75,16 @@ export default class Boggle extends Component {
 								<ul className="actions">
 									<li><button className="help" onClick={this.handleHelp} ><i className="fa fa-exclamation" aria-hidden="true"></i><span> راهنما </span></button></li>
 									<li><button className="new" onClick={this.playGame}><i className="fa fa-gamepad" aria-hidden="true"></i><span> بازی جدید </span></button></li>
-									<li><button className="back"><i className="fa fa-power-off" aria-hidden="true"></i><span> خروج </span></button></li>
 								</ul>
 							</nav>
 						</div>
 						<div className="col-8">
-							<Game draging={this.state.draging} tableValues={this.state.tableValues} Answers={this.state.availableAnswers}/>
+							<Game 
+								draging={this.state.draging} 
+								tableValues={this.state.tableValues} 
+								Answers={this.state.availableAnswers}
+								userPickups={this.state.userAnswers}
+								userAnswers={this.handleUserAnswers} />
 						</div>
 					</div>
 				</div>

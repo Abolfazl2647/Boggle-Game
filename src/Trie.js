@@ -3,7 +3,6 @@
 
 // -----------------------------------------
 import DB from './DB.json';
-
 // we start with the TrieNode
 function TrieNode(key) {
     // the "key" value will be the character in sequence
@@ -17,7 +16,7 @@ function TrieNode(key) {
     
     // check to see if the node is at the end
     this.end = false;
-  }
+}
   
   // iterates through the parents to get the word.
   // time complexity: O(k), k = word length

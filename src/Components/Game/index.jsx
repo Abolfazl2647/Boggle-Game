@@ -5,26 +5,23 @@ import './Game.scss';
 export default class Game extends Component {
 	constructor(props){
 		super(props);
-		
 		this.handleMouseEnter = this.handleMouseEnter.bind(this);
 		this.allowDirection = this.allowDirection.bind(this);
 		this.isBackward = this.isBackward.bind(this);
 		this.start = this.start.bind(this);
 		this.end = this.end.bind(this);
-	
 	}
 
 	state = {
 		string:"",
-		selectedIds:[],
-		answerCells:[],
 		answerIds:[],
-		lastPos: null
+		selectedIds:[],
+		selectedPath: []
 	}
 
 	allowDirection(pos) {
 		let direction = null;
-		let lastPos = this.state.lastPos;
+		let lastPos = this.state.selectedPath[this.state.selectedPath.length-1];
 		if ( lastPos.col === pos.col && lastPos.row+1 === pos.row  ) { direction = "right"
 		} else if ( lastPos.col === pos.col && lastPos.row-1 === pos.row ) { direction = "left"
 		} else if ( lastPos.row === pos.row && lastPos.col+1 === pos.col ) { direction = "down"
@@ -34,64 +31,66 @@ export default class Game extends Component {
 	}
 
 	isBackward(goingPos) {
-		let lastPos = this.state.lastPos;
-
-		console.log(goingPos , lastPos)
-
+		let lastPos = this.state.selectedPath[this.state.selectedPath.length-2];
 		if ( lastPos ){
 			return (goingPos.row === lastPos.row && goingPos.col === lastPos.col);
-		} else { return false}
-		
+		} else {
+			return false;
+		}
 	}
 
 	start(item,pos) {
 		// set start position , string and id
 		// add string
+		let selectedPath = [...this.state.selectedPath];
 		let selectedIds = [...this.state.selectedIds];
 		let string = this.state.string;
 			string += item.value;
 			selectedIds.push(item.id);
-		this.setState({string, selectedIds, lastPos:pos})
+			selectedPath.push(pos);
+		this.setState({string, selectedIds, selectedPath})
 	}
 
 	handleMouseEnter(item,goingPos) {
 		if (!this.props.draging) return;
 		if (this.allowDirection(goingPos)) {
+			let selectedPath = [...this.state.selectedPath];
 			let selectedIds = [...this.state.selectedIds];
 			let string = this.state.string;
 			if ( !this.isBackward(goingPos)) {
 				string += item.value;
 				selectedIds.push(item.id);
-				this.setState({string, selectedIds, lastPos:goingPos});
+				selectedPath.push(goingPos);
 			} else {
 				selectedIds.pop();
+				selectedPath.pop();
 				string = string.slice(0, string.length-1);
 			}
+			this.setState({string, selectedIds, selectedPath});
 		}
 	}
 
 	end() {
-		let answerCells = [...this.state.answerCells];
 		let answerIds = [...this.state.answerIds];
+
 		if ( Trie.contains(this.state.string) ) {
 			answerIds = answerIds.concat(this.state.selectedIds);
-			answerCells.push({
+			this.props.userAnswers({
 				string: this.state.string,
 				cells: this.state.selectedIds
 			});
 		}
 		// back to defaults
-		this.setState({selectedIds:[], answerCells, answerIds, string:""});
+		this.setState({answerIds, selectedIds:[], string:""});
 	}
 
-	// TODO: if user turn back in the col/row i should remove the string
 	// TODO: if user find all answers we show him a congrats Alert
 	// TODO: add timeout for selecting all words;
-	// Clear Data on New Game
 
 	render() {
-		console.log(this.props)
+
 		let row=-1,col=0;
+
 		return (
 			<div className="Game-Wrapper">
 				<div className="Game-Header">
@@ -110,18 +109,21 @@ export default class Game extends Component {
 						} else { row++ };
 						let pos = {row,col};
 
-						return <div className={(
-											(this.state.selectedIds.indexOf(item.id) !== -1 ? " active " : "") + 
-											(this.state.answerIds.indexOf(item.id) !== -1 ? " answer " : "") + " cell " )}
-									key={item.id}
-									unselectable="on"
-									onMouseUp={this.end}
-									onMouseDown={()=> {this.start(item,pos)}}
-									onMouseEnter={()=> {this.handleMouseEnter(item,pos)}}>{item.value}</div>
+						return (
+							<div className={
+								(this.state.selectedIds.indexOf(item.id) !== -1 ? " active " : "") + 
+								(this.state.answerIds.indexOf(item.id) !== -1 ? " answer " : "") + " cell "}
+								key={item.id}
+								unselectable="on"
+								onMouseUp={this.end}
+								onMouseDown={()=> {this.start(item,pos)}}
+								onMouseEnter={()=> {this.handleMouseEnter(item,pos)}}>{item.value}</div>
+						)
 					})}
 				</div>
 				<div className="answer-list">
-					{this.state.answerCells.map((item,index) => {
+					<p>کلمات یافت شده:</p>
+					{this.props.userPickups.map((item,index) => {
 						return <span key={index}><i className="fa fa-tag" aria-hidden="true"></i><span>{item.string}</span></span>
 					})}
 				</div>
