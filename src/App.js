@@ -54,13 +54,9 @@ export default class Boggle extends Component {
 			if ( uniqueNames.indexOf(item) === -1) uniqueNames.push(item);
 		});
 
-		if ( uniqueNames.length < 5 && uniqueNames.length > 10 ) {
-			for ( let i=0; i < uniqueNames.length ; i++ ) {
-				if ( uniqueNames[i].length <=3 ) {
-					this.playGame();
-					return;
-				}
-			}
+		if ( Answers.length < 10 ) {
+			this.playGame();
+			return;
 		}
 
 		this.RunTimer();
@@ -139,7 +135,11 @@ export default class Boggle extends Component {
 						userAnswers={this.handleUserAnswers}
 						Answers={this.state.availableAnswers} />
 				</div>
-				<Modal visibility={this.state.needHelp} ToggleModal={this.ToggleModal} Answers={this.state.availableAnswers} />
+				<Modal 
+					visibility={this.state.needHelp} 
+					ToggleModal={this.ToggleModal} 
+					userPickups={this.state.userAnswers}
+					Answers={this.state.availableAnswers} />
 			</div>
 		);
 	}

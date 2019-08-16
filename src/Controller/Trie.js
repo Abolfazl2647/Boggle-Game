@@ -2,7 +2,8 @@
 // https://en.wikipedia.org/wiki/Trie
 
 // -----------------------------------------
-import DB from '../DB.json';
+import DB from '../DB_5.json';
+console.log(DB)
 // we start with the TrieNode
 function TrieNode(key) {
     // the "key" value will be the character in sequence
@@ -132,8 +133,8 @@ function TrieNode(key) {
 //   trie.insert("hello");
 //   trie.insert("helium");
 
-  for ( let i=0; i < DB.length; i++ ) {
-    trie.insert(DB[i].farsi.trim(' '));
+  for ( let i=0; i < DB.words.length; i++ ) {
+    trie.insert(DB.words[i].trim(' '));
   }
 
   export default trie;

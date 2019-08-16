@@ -20,13 +20,18 @@ export default class Modal extends Component {
     }
 
     render() { 
+
+        let UserPickUps = this.props.userPickups.map((item) => {
+            return item.string;
+        })
+
         return (
             <div className={(( this.props.visibility ) ? 'show' : "") + " Modal-Wrapper "}>
                 <div className="Modal" ref={this.wrapperRef}>
                     <p><i className="fa fa-tags" aria-hidden="true"></i><span>راهنما</span></p>
                     <ul>
                         {this.props.Answers.map((item,index)=>{
-                            return <li key={index}><i className="fa fa-tag" aria-hidden="true"></i><span>{item}</span></li>
+                            return <li key={index} className={ (UserPickUps.indexOf(item) !== -1) ? "found" : "" }><i className="fa fa-tag" aria-hidden="true"></i><span>{item}</span></li>
                         })} 
                     </ul>
                 </div>
