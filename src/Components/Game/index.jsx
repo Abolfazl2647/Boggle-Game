@@ -98,6 +98,10 @@ export default class Game extends Component {
 						<span className="num">{this.props.Answers.length}</span>
 					</label>
 					<p className="currentString">{this.state.string}</p>
+					<label className="clock">
+						<span className="num">{this.props.clock}</span>
+						<span className="clock fa fa-clock-o"></span>
+					</label>
 				</div>
 				<div className="Game">
 					{this.props.tableValues.map((item) => {

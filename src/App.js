@@ -17,6 +17,8 @@ export default class Boggle extends Component {
 		this.ToggleModal = this.ToggleModal.bind(this);
 		this.handleHelp = this.handleHelp.bind(this);
 		this.playGame = this.playGame.bind(this);
+
+		this.timer = null;
 	}
 
 	state = {
@@ -24,7 +26,11 @@ export default class Boggle extends Component {
 		draging: false,
 		availableAnswers:[],
 		userAnswers:[],
-		tableValues:[]
+		tableValues:[],
+		win: false,
+		loose: false,
+		time: 120,
+		clock: null
 	}
 
 	handleHelp() {
@@ -50,18 +56,44 @@ export default class Boggle extends Component {
 		this.setState({
 			tableValues: RandomValues,
 			availableAnswers: Answers,
-			userAnswers:[]
+			userAnswers:[],
+			win: false,
+			loose: false
 		});
 	}
 
 	handleUserAnswers(obj) {
 		let userAnswers = [...this.state.userAnswers];
 			userAnswers.push(obj);
-		this.setState({userAnswers});
+		this.setState({userAnswers}, () => {
+			if ( this.state.userAnswers.length === this.state.availableAnswers.length) {
+				this.setState({win:true});
+			}
+		});
 	}
 
 	componentDidMount() {
 		this.playGame();
+		let timer = this.state.time;
+		this.timer = setInterval(() => {
+			timer--;
+			let min = parseInt(this.state.time / 60);
+			let sec = this.state.time % 60;
+			if ( sec < 10 ) {
+				sec = "0" + sec;
+			}
+			this.setState({time: timer, clock: min+":"+sec});
+		},1000);
+	}
+
+	componentDidUpdate() {
+		if ( this.state.time === 0) {
+			this.setState({loose: true});
+		}
+	}
+
+	componentWillUnmount() {
+		clearTimeout(this.timer);
 	}
 
 	render() { 
@@ -72,16 +104,17 @@ export default class Boggle extends Component {
 						<nav>
 							<ul className="actions">
 								<li><button className="new" onClick={this.playGame}><i className="fa fa-gamepad" aria-hidden="true"></i><span> بازی جدید </span></button></li>
-								<li><button className="help" onClick={this.handleHelp} ><i className="fa fa-exclamation" aria-hidden="true"></i><span> راهنما </span></button></li>
+								<li><button className="help" onClick={this.handleHelp}><i className="fa fa-exclamation" aria-hidden="true"></i><span> راهنما </span></button></li>
 							</ul>
 						</nav>
 					</div>
 					<Game 
+						clock={this.state.clock}
 						draging={this.state.draging} 
-						tableValues={this.state.tableValues} 
-						Answers={this.state.availableAnswers}
+						tableValues={this.state.tableValues}
 						userPickups={this.state.userAnswers}
-						userAnswers={this.handleUserAnswers} />
+						userAnswers={this.handleUserAnswers}
+						Answers={this.state.availableAnswers} />
 				</div>
 				<Modal visibility={this.state.needHelp} ToggleModal={this.ToggleModal} Answers={this.state.availableAnswers} />
 			</div>
