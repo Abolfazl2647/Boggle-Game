@@ -58,7 +58,8 @@ export default class Boggle extends Component {
 			availableAnswers: Answers,
 			userAnswers:[],
 			win: false,
-			loose: false
+			loose: false,
+			time:120
 		});
 	}
 
@@ -75,6 +76,10 @@ export default class Boggle extends Component {
 	componentDidMount() {
 		this.playGame();
 		let timer = this.state.time;
+		if ( this.state.time === 0) {
+			clearTimeout(this.timer);
+			this.setState({loose: true});
+		}
 		this.timer = setInterval(() => {
 			timer--;
 			let min = parseInt(this.state.time / 60);
@@ -84,12 +89,6 @@ export default class Boggle extends Component {
 			}
 			this.setState({time: timer, clock: min+":"+sec});
 		},1000);
-	}
-
-	componentDidUpdate() {
-		if ( this.state.time === 0) {
-			this.setState({loose: true});
-		}
 	}
 
 	componentWillUnmount() {
