@@ -2,7 +2,7 @@
 // https://en.wikipedia.org/wiki/Trie
 
 // -----------------------------------------
-import DB from './DB.json';
+import DB from '../DB.json';
 // we start with the TrieNode
 function TrieNode(key) {
     // the "key" value will be the character in sequence

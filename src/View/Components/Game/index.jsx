@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Trie from '../../Trie.js';
+import Trie from '../../../Controller/Trie.js';
 import './Game.scss';
 
 export default class Game extends Component {
@@ -83,8 +83,9 @@ export default class Game extends Component {
 		this.setState({answerIds, selectedIds:[], string:""});
 	}
 
-	// TODO: if user find all answers we show him a congrats Alert
-	// TODO: add timeout for selecting all words;
+	// TODO: if user Win Or Loose show Alert
+	// TODO: PWA
+	// TODO: MVC
 
 	render() {
 

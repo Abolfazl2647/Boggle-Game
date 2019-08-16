@@ -1,7 +1,7 @@
 import React , { Component } from 'react';
-import Game from './Components/Game';
-import Modal from './Components/Help';
-import Helper from './helper.js';
+import Game from './View/Components/Game';
+import Modal from './View/Components/Help';
+import Helper from './Controller/helper.js';
 import './App.scss';
 
 // TODO: remove Duplication 
