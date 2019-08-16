@@ -3,7 +3,6 @@ import Game from './View/Components/Game';
 import Modal from './View/Components/Help';
 import Helper from './Controller/helper.js';
 import './App.scss';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 // TODO: remove Duplication 
 
@@ -30,7 +29,7 @@ export default class Boggle extends Component {
 		tableValues:[],
 		win: false,
 		loose: false,
-		time: 120,
+		time: 90,
 		clock: null
 	}
 
@@ -49,18 +48,25 @@ export default class Boggle extends Component {
 		let RandomValues = Helper.generate_random_aplphabet();
 		let Answers = Helper.find_answer(RandomValues);
 		// we need at least ten word to be found
-		if ( Answers.length < 10 ) {
+		// remove duplicate data
+		var uniqueNames = [];
+		Answers.forEach((item) => {
+			if ( uniqueNames.indexOf(item) === -1) uniqueNames.push(item);
+		});
+
+		if ( uniqueNames.length < 5 ) {
 			this.playGame();
 			return;
 		}
 
+		this.RunTimer();
 		this.setState({
 			tableValues: RandomValues,
-			availableAnswers: Answers,
+			availableAnswers: uniqueNames,
 			userAnswers:[],
 			win: false,
 			loose: false,
-			time:120
+			time: 90,
 		});
 	}
 
@@ -68,49 +74,46 @@ export default class Boggle extends Component {
 		let timer = this.state.time;
 		clearTimeout(this.timer);
 		this.timer = setInterval(() => {
-			timer--;
-			let min = parseInt(this.state.time / 60);
-			let sec = this.state.time % 60;
-			if ( sec < 10 ) {
-				sec = "0" + sec;
-			}
-			this.setState({time: timer, clock: min+":"+sec},() => {
-				if ( this.state.time === 0) {
-					clearTimeout(this.timer);
-					this.setState({loose: true,clock: min+":"+sec});
+			timer--;	
+			this.setState({time: timer}, () => {
+				let min = parseInt(this.state.time / 60);
+				let sec = this.state.time % 60;
+				if ( sec < 10 )  sec = "0" + sec;
+				if ( !this.state.win ) {
+					this.setState({clock: min+":"+sec},() => {
+						if ( this.state.time === 0) {
+							clearTimeout(this.timer);
+							this.setState({loose: true});
+						}
+					});
 				}
-			});
+			});		
 		},1000);
-		
 	}
 
 	handleUserAnswers(obj) {
+		let availableAnswers = [...this.state.availableAnswers];
 		let userAnswers = [...this.state.userAnswers];
+		if ( availableAnswers.indexOf(obj) === -1 ) {
 			userAnswers.push(obj);
+		}
+			
 		this.setState({userAnswers}, () => {
 			if ( this.state.userAnswers.length === this.state.availableAnswers.length) {
-				this.setState({win:true});
+				this.setState({win:true, clock:"00:00"});
 			}
 		});
 	}
 
-	componentDidMount() {
-		this.playGame();
-		this.RunTimer();
-	}
-
-	componentWillUnmount() {
-		clearTimeout(this.timer);
-	}
-
+	componentDidMount() {this.playGame(); }
+	componentWillUnmount() { clearTimeout(this.timer); }
 	componentDidUpdate() {
-		if ( this.state.time === 120 ) {
+		if ( this.state.time === 90 ) {
 			this.RunTimer();
 		}
 	}
 
-	render() { 
-		console.log("Render")
+	render() {
 		return (
 			<div className="App" onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp}>
 				<div className={((this.state.needHelp) ? " blur " : "" )}>
@@ -123,6 +126,8 @@ export default class Boggle extends Component {
 						</nav>
 					</div>
 					<Game 
+						win={this.state.win}
+						loose={this.state.loose}
 						clock={this.state.clock}
 						draging={this.state.draging} 
 						tableValues={this.state.tableValues}

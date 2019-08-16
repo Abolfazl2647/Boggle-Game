@@ -24,12 +24,16 @@ $margin:5px;
 
         p.currentString {
 
-            min-height: 30px;
-            margin: 2em 0 0 0;
-            line-height: 30px;
+            min-height: 20px;
+            margin: 1em 0 1em 0;
+            line-height: 20px;
             text-align: center;
+            font-size: 12px;
             width: 100%;
             color: #567dd8;
+
+            &.win{color: #59c173}
+            &.loose{color: #f44b5c}
         }
 
         label.total-words {
@@ -152,6 +156,50 @@ $margin:5px;
                 color: #fff;
                 background-color:#567dd8;
             }
+
+            &.answer.win {
+                border: 2px solid #59c173;
+                background-color:#59c173;
+            }
+
+            &.answer.loose {
+               color: #fff;
+               background-color: #f44b5c;
+            }
+
+            &.win:not(.answer) {
+
+                color: #59c173;
+                position: relative;
+                border: 2px solid #59c173;
+                -webkit-animation: win .3s linear .2s infinite alternate;
+                -moz-animation: win .3s linear .2s infinite alternate;
+                animation: win .3s linear .2s infinite alternate;
+            }
+
+            &.loose {
+                color: #f44b5c;
+                border: 2px solid #f44b5c;
+                // background-color:#f44b5c;
+            }
         }
     }
+}
+
+
+
+@-webkit-keyframes win {
+    0%   {-webkit-transform: rotate(20deg)}
+    100% {-webkit-transform: rotate(-20deg)}
+}
+
+@-moz-keyframes win {
+    0%   {-moz-transform: rotate(20deg)}
+    100% {-moz-transform: rotate(-20deg)}
+}
+
+/* Standard syntax */
+@keyframes win {
+    0%   {transform: rotate(20deg)}
+    100% {transform: rotate(-20deg)}
 }

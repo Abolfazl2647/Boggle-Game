@@ -42,6 +42,7 @@ export default class Game extends Component {
 	start(item,pos) {
 		// set start position , string and id
 		// add string
+		if (this.props.loose) return;
 		let selectedPath = [...this.state.selectedPath];
 		let selectedIds = [...this.state.selectedIds];
 		let string = this.state.string;
@@ -52,6 +53,7 @@ export default class Game extends Component {
 	}
 
 	handleMouseEnter(item,goingPos) {
+		if (this.props.loose) return;
 		if (!this.props.draging) return;
 		if (this.allowDirection(goingPos)) {
 			let selectedPath = [...this.state.selectedPath];
@@ -98,7 +100,9 @@ export default class Game extends Component {
 						<span>کلمات موجود:</span>
 						<span className="num">{this.props.Answers.length}</span>
 					</label>
-					<p className="currentString">{this.state.string}</p>
+					<p className={(this.props.win ? " win " : "") + (this.props.loose ? " loose " : "") + "currentString"}>
+						{(this.props.win) ? "برنده شدید" : (this.props.loose) ? " باختی " : this.state.string}
+					</p>
 					<label className="clock">
 						<span className="num">{this.props.clock}</span>
 						<span className="clock fa fa-clock-o"></span>
@@ -115,6 +119,8 @@ export default class Game extends Component {
 
 						return (
 							<div className={
+								(this.props.win ? " win " : "") +
+								(this.props.loose ? " loose " : "") +
 								(this.state.selectedIds.indexOf(item.id) !== -1 ? " active " : "") + 
 								(this.state.answerIds.indexOf(item.id) !== -1 ? " answer " : "") + " cell "}
 								key={item.id}
