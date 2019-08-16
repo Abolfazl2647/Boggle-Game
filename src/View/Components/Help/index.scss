@@ -50,8 +50,11 @@
         ul {
 
             list-style: none;
+            padding:0;
             padding-right: 1em;
             margin-top: 2em;
+            max-height: 450px;
+            overflow-y:auto;
 
             li {
 

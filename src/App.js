@@ -54,9 +54,13 @@ export default class Boggle extends Component {
 			if ( uniqueNames.indexOf(item) === -1) uniqueNames.push(item);
 		});
 
-		if ( uniqueNames.length < 5 ) {
-			this.playGame();
-			return;
+		if ( uniqueNames.length < 5 && uniqueNames.length > 10 ) {
+			for ( let i=0; i < uniqueNames.length ; i++ ) {
+				if ( uniqueNames[i].length <=3 ) {
+					this.playGame();
+					return;
+				}
+			}
 		}
 
 		this.RunTimer();

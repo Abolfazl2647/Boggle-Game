@@ -132,8 +132,8 @@ function TrieNode(key) {
 //   trie.insert("hello");
 //   trie.insert("helium");
 
-  for ( let i=0; i < DB.word.length; i++ ) {
-    trie.insert(DB.word[i].trim(' '));
+  for ( let i=0; i < DB.length; i++ ) {
+    trie.insert(DB[i].farsi.trim(' '));
   }
 
   export default trie;
