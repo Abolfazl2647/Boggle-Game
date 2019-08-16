@@ -3,6 +3,7 @@ import Game from './View/Components/Game';
 import Modal from './View/Components/Help';
 import Helper from './Controller/helper.js';
 import './App.scss';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 // TODO: remove Duplication 
 
@@ -17,7 +18,7 @@ export default class Boggle extends Component {
 		this.ToggleModal = this.ToggleModal.bind(this);
 		this.handleHelp = this.handleHelp.bind(this);
 		this.playGame = this.playGame.bind(this);
-
+		this.RunTimer = this.RunTimer.bind(this);
 		this.timer = null;
 	}
 
@@ -63,6 +64,26 @@ export default class Boggle extends Component {
 		});
 	}
 
+	RunTimer() {
+		let timer = this.state.time;
+		clearTimeout(this.timer);
+		this.timer = setInterval(() => {
+			timer--;
+			let min = parseInt(this.state.time / 60);
+			let sec = this.state.time % 60;
+			if ( sec < 10 ) {
+				sec = "0" + sec;
+			}
+			this.setState({time: timer, clock: min+":"+sec},() => {
+				if ( this.state.time === 0) {
+					clearTimeout(this.timer);
+					this.setState({loose: true,clock: min+":"+sec});
+				}
+			});
+		},1000);
+		
+	}
+
 	handleUserAnswers(obj) {
 		let userAnswers = [...this.state.userAnswers];
 			userAnswers.push(obj);
@@ -75,27 +96,21 @@ export default class Boggle extends Component {
 
 	componentDidMount() {
 		this.playGame();
-		let timer = this.state.time;
-		if ( this.state.time === 0) {
-			clearTimeout(this.timer);
-			this.setState({loose: true});
-		}
-		this.timer = setInterval(() => {
-			timer--;
-			let min = parseInt(this.state.time / 60);
-			let sec = this.state.time % 60;
-			if ( sec < 10 ) {
-				sec = "0" + sec;
-			}
-			this.setState({time: timer, clock: min+":"+sec});
-		},1000);
+		this.RunTimer();
 	}
 
 	componentWillUnmount() {
 		clearTimeout(this.timer);
 	}
 
+	componentDidUpdate() {
+		if ( this.state.time === 120 ) {
+			this.RunTimer();
+		}
+	}
+
 	render() { 
+		console.log("Render")
 		return (
 			<div className="App" onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp}>
 				<div className={((this.state.needHelp) ? " blur " : "" )}>
