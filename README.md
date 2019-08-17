@@ -1,9 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ### Boggle Game:
-![Boggle-Game](https://raw.githubusercontent.com/Abolfazl2647/Boggle-Game/master/public/image/game.png)
-![Boggle-Game-win](https://raw.githubusercontent.com/Abolfazl2647/Boggle-Game/master/public/image/win.png)
-![Boggle-Game-loose](https://raw.githubusercontent.com/Abolfazl2647/Boggle-Game/master/public/image/loose.png)
+![Boggle-Game](https://raw.githubusercontent.com/Abolfazl2647/Boggle-Game/master/public/image/boggle-game.png)
 
 ## Available Scripts
 
