@@ -29,7 +29,7 @@ export default class Boggle extends Component {
 		tableValues:[],
 		win: false,
 		loose: false,
-		time: 90,
+		time: 10,
 		clock: null
 	}
 
@@ -66,7 +66,7 @@ export default class Boggle extends Component {
 			userAnswers:[],
 			win: false,
 			loose: false,
-			time: 90,
+			time: 10,
 		});
 	}
 
@@ -108,7 +108,7 @@ export default class Boggle extends Component {
 	componentDidMount() {this.playGame(); }
 	componentWillUnmount() { clearTimeout(this.timer); }
 	componentDidUpdate() {
-		if ( this.state.time === 90 ) {
+		if ( this.state.time === 10 ) {
 			this.RunTimer();
 		}
 	}
