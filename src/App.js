@@ -29,7 +29,7 @@ export default class Boggle extends Component {
 		tableValues:[],
 		win: false,
 		loose: false,
-		time: 10,
+		time: 150,
 		clock: null
 	}
 
@@ -66,7 +66,7 @@ export default class Boggle extends Component {
 			userAnswers:[],
 			win: false,
 			loose: false,
-			time: 10,
+			time: 150,
 		});
 	}
 
@@ -92,9 +92,18 @@ export default class Boggle extends Component {
 	}
 
 	handleUserAnswers(obj) {
-		let availableAnswers = [...this.state.availableAnswers];
+
+
+		
 		let userAnswers = [...this.state.userAnswers];
-		if ( availableAnswers.indexOf(obj) === -1 ) {
+		let index = -1;
+		for (let i=0; i < userAnswers.length ; i++) {
+			if ( userAnswers[i].string === obj.string ) {
+				index = i;
+			}
+		}
+		
+		if ( index === -1 ) {
 			userAnswers.push(obj);
 		}
 			
@@ -108,7 +117,7 @@ export default class Boggle extends Component {
 	componentDidMount() {this.playGame(); }
 	componentWillUnmount() { clearTimeout(this.timer); }
 	componentDidUpdate() {
-		if ( this.state.time === 10 ) {
+		if ( this.state.time === 150 ) {
 			this.RunTimer();
 		}
 	}
