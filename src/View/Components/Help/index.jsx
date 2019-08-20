@@ -45,6 +45,7 @@ class Modal extends Component {
 
 const mappropsToProps = (state) => {
 	return {
+        userAnswers: state.Boggle.userAnswers,
 		Answers: state.Boggle.Answers,
 		help_visibility: state.Boggle.help_visibility,
 	}

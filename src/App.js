@@ -67,8 +67,6 @@ class Boggle extends Component {
 	}
 
 	handleUserAnswers(obj) {
-		
-
         let userAnswers = [...this.props.userAnswers];
         let index = -1;
         for (let i=0; i < userAnswers.length ; i++) {
@@ -77,10 +75,10 @@ class Boggle extends Component {
 				break;
             }
         }
-        if ( index === -1 ) { userAnswers.push(obj); }
-
+		if ( index === -1 ) { userAnswers.push(obj); }
+		
+		console.log(userAnswers);
 		this.props.user_find_something(userAnswers);
-
 		if ( this.props.userAnswers.length === this.props.Answers.length) {
 			this.props.toggle_wining_status(true);
 			this.props.updateClock("00:00");
@@ -102,8 +100,7 @@ class Boggle extends Component {
 							</ul>
 						</nav>
 					</div>
-					<Game 
-						userAnswers={this.handleUserAnswers} />
+					<Game userAnswers={this.handleUserAnswers} />
 				</div>
 				<Modal />
 			</div>
@@ -116,7 +113,7 @@ const mappropsToProps = (state) => {
 	return {
 		userAnswers: state.Boggle.userAnswers,
 		tableValues: state.Boggle.tableValues,
-		availableAnswers: state.Boggle.availableAnswers,
+		Answers: state.Boggle.Answers,
 		help_visibility: state.Boggle.help_visibility,
 		winingStatus: state.Boggle.winingStatus,
 		clock: state.Boggle.clock
