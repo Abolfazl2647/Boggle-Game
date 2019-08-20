@@ -3,7 +3,6 @@ import Game from './View/Components/Game';
 import Modal from './View/Components/Help';
 import Helper from './Controller/helper.js';
 import { connect } from 'react-redux';
-
 import BoggleActions from './ViewModel/actions/boggle_actions';
 import './App.scss';
 // TODO: remove Duplication 
@@ -27,6 +26,7 @@ class Boggle extends Component {
 	handleMouseUp() { this.props.toggle_draging(false)}
 
 	playGame() {
+		this.timer = 150;
 		let RandomValues = Helper.generate_random_aplphabet();
 		let availableAnswers = Helper.find_answer(RandomValues);
 		// we need at least ten word to be found
@@ -46,7 +46,7 @@ class Boggle extends Component {
 	}
 
 	RunTimer() {
-		this.timer = 150;
+		
 		clearTimeout(this.timeInterval);
 		this.timeInterval = setInterval(() => {
 			this.timer--;
@@ -56,8 +56,8 @@ class Boggle extends Component {
 			if ( !this.props.winingStatus ) {
 				this.props.updateClock(min+":"+sec);
 				if ( this.timer === 0) {
-					clearTimeout(this.timeInterval);
 					this.props.toggle_wining_status(false);
+					clearTimeout(this.timeInterval);
 				}
 			}	
 		},1000);

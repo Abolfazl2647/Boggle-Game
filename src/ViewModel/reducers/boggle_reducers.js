@@ -9,6 +9,7 @@ const initialState = {
     selectedIds:[],
     Answers:[],
     draging: false,
+    string: "",
     gameResult: "",
     winingStatus: false,
     help_visibility:false,
@@ -50,7 +51,7 @@ const BoggleGame = (state = initialState , action ) => {
         if ( action.peyload.userAnswers.length === state.Answers.length) {
             return {
                 ...state,
-                clock:"00:00",
+                clock:"0:00",
                 winingStatus: true,
                 selectedIds:[],
             }

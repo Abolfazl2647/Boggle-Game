@@ -3,7 +3,6 @@
 
 // -----------------------------------------
 import DB from '../DB_5.json';
-console.log(DB)
 // we start with the TrieNode
 function TrieNode(key) {
     // the "key" value will be the character in sequence

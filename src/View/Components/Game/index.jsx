@@ -100,6 +100,7 @@ class Game extends Component {
 	render() {
 
 		let row=-1,col=0;
+
 		return (
 			<div className="Game-Wrapper">
 				<div className="Game-Header">
@@ -108,7 +109,7 @@ class Game extends Component {
 						<span className="num">{this.props.Answers ? this.props.Answers.length : null}</span>
 					</label>
 					<p className={(this.props.winingStatus ? " win " : " loose ") + "currentString"}>
-						{(this.props.clock === "00:00") ? (this.props.winingStatus) ? "برنده شدید" :  " باختی " : null}
+						{(this.props.clock === "0:00") ? (this.props.winingStatus) ? "برنده شدید" :  " باختی " : this.props.string}
 					</p>
 					<label className="clock">
 						<span className="num">{this.props.clock}</span>
@@ -125,7 +126,7 @@ class Game extends Component {
 
 						return (
 							<div className={
-								(this.props.clock === "00:00" ? this.props.winingStatus ? " win " : "loose" : "") +
+								(this.props.clock === "0:00" ? this.props.winingStatus ? " win " : "loose" : "") +
 								(this.props.selectedIds.indexOf(item.id) !== -1 ? " active " : "") + 
 								(this.props.answerIds.indexOf(item.id) !== -1 ? " answer " : "") + " cell "}
 								key={item.id}
