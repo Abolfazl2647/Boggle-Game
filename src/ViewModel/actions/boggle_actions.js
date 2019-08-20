@@ -2,7 +2,7 @@ import { NEW_GAME, TOGGLE_MODAL, USER_FIND_SOMETHING, CLOCK_UPDATE, TOGGLE_WININ
 
 export default {
     new_game : (tableVlaues, answers) => (dispatch) => {
-        console.log(tableVlaues, answers)
+        console.log("NEW GAME")
         dispatch({
             type: NEW_GAME,
             peyload: {

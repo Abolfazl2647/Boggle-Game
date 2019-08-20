@@ -21,16 +21,9 @@ class Boggle extends Component {
 		this.RunTimer = this.RunTimer.bind(this);
 
 		this.timer = 150;
-		this.timeInter = null;
+		this.timeInterval = null;
 		this.draging = false;
 
-	}
-
-	state = {
-		clock: null,
-		userAnswers:[],
-		winingStatus: false,
-		help_visibility:false,
 	}
 
 	ToggleModal(bool) { this.props.toggle_modal(bool); }
@@ -51,14 +44,15 @@ class Boggle extends Component {
 			this.playGame();
 			return;
 		}
-
+		
 		this.RunTimer();
 		this.props.new_game(RandomValues , Answers);
 	}
 
 	RunTimer() {
-		clearTimeout(this.timeInter);
-		this.timeInter = setInterval(() => {
+		this.timer = 150;
+		clearTimeout(this.timeInterval);
+		this.timeInterval = setInterval(() => {
 			this.timer--;
 			let min = parseInt(this.timer / 60);
 			let sec = this.timer % 60;
@@ -66,7 +60,7 @@ class Boggle extends Component {
 			if ( !this.props.winingStatus ) {
 				this.props.updateClock(min+":"+sec);
 				if ( this.timer === 0) {
-					clearTimeout(this.timeInter);
+					clearTimeout(this.timeInterval);
 					this.props.toggle_wining_status(false);
 				}
 			}	
@@ -74,26 +68,15 @@ class Boggle extends Component {
 	}
 
 	handleUserAnswers(obj) {
-		let availableAnswers = [...this.state.availableAnswers];
-		let userAnswers = [...this.state.userAnswers];
-		if ( availableAnswers.indexOf(obj) === -1 ) {
-			userAnswers.push(obj);
+		this.props.user_find_something(obj);
+		if ( this.props.userAnswers.length === this.props.availableAnswers.length) {
+			this.props.toggle_wining_status(true);
+			this.props.updateClock("00:00");
 		}
-			
-		this.setState({userAnswers}, () => {
-			if ( this.state.userAnswers.length === this.state.availableAnswers.length) {
-				this.setState({win:true, clock:"00:00"});
-			}
-		});
 	}
 
 	componentDidMount() {this.playGame(); }
-	componentWillUnmount() { clearTimeout(this.timeInter); }
-	componentDidUpdate() {
-		if ( this.timer === 150 ) {
-			this.RunTimer();
-		}
-	}
+	componentWillUnmount() { clearTimeout(this.timeInterval); }
 
 	render() {
 		return (
@@ -107,17 +90,9 @@ class Boggle extends Component {
 							</ul>
 						</nav>
 					</div>
-					<Game 
-						clock={this.props.clock}
-						draging={this.draging}
-						userPickups={this.state.userAnswers}
-						userAnswers={this.handleUserAnswers} />
+					<Game draging={this.draging} />
 				</div>
-				<Modal 
-					visibility={this.props.help_visibility} 
-					ToggleModal={this.ToggleModal} 
-					userPickups={this.state.userAnswers}
-					Answers={this.props.availableAnswers} />
+				<Modal />
 			</div>
 		);
 	}

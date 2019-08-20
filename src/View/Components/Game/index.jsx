@@ -133,9 +133,9 @@ class Game extends Component {
 				</div>
 				<div className="answer-list">
 					<p>کلمات یافت شده:</p>
-					{this.props.userPickups.map((item,index) => {
+					{this.props.userPickups ? this.props.userPickups.map((item,index) => {
 						return <span key={index}><i className="fa fa-tag" aria-hidden="true"></i><span>{item.string}</span></span>
-					})}
+					}): null}
 				</div>
 			</div>
 		);

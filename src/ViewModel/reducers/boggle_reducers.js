@@ -14,7 +14,10 @@ const BoggleGame = (state = initialState , action ) => {
     if ( action.type === NEW_GAME ) {
         return {
             ...state,
-            initialState,
+            clock: null,
+            userAnswers:[],
+            winingStatus: false,
+            help_visibility:false,
             tableValues: action.peyload.tableVlaues,
             availableAnswers: action.peyload.answers,
         };
@@ -49,7 +52,6 @@ const BoggleGame = (state = initialState , action ) => {
                 index = i;
             }
         }
-        
         if ( index === -1 ) { userAnswers.push(action.peyload); }
         return {
             ...state,
