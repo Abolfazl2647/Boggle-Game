@@ -1,15 +1,22 @@
 {
+  "name": "Boggle Game",
   "short_name": "Boggle Game",
-  "name": "جدول حدس کلمه",
+  "dir": "ltr",
+  "lang": "en-US",
+  "orientation": "any",
+  "start_url": "/",
+  "background_color": "#fff",
+  "theme_color": "#fff",
+  "display": "standalone",
+  "description": "Boggle Game - Trie and Backtrack - ReactJs",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "./image/boggle-192.png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./image/boggle-512.png",
+      "sizes": "512x512"
     }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  ]
 }

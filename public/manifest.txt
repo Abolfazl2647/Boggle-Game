@@ -1,0 +1,29 @@
+{
+  "name": "PawJS",
+  "short_name": "PawJS",
+
+  // Possible values ltr(left to right)/rtl(right to left)
+  "dir": "ltr",
+
+  // language: Default en-US
+  "lang": "en-US",
+
+  // Orientation of web-app possible:
+  // any, natural, landscape, landscape-primary, landscape-secondary, portrait, portrait-primary, portrait-secondary
+  "orientation": "any",
+  "start_url": "/",
+  "background_color": "#fff",
+  "theme_color": "#fff",
+  "display": "standalone",
+  "description": "A highly scalable & plug-able, Progressive Web Application foundation with the best Developer Experience.",
+  "icons": [
+    {
+      "src": "/path-to-pwa-icon-size-192x192.png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/path-to-pwa-icon-size-512x512.png",
+      "sizes": "512x512"
+    }
+  ]
+}
