@@ -6,15 +6,12 @@ import { connect } from 'react-redux';
 
 import BoggleActions from './ViewModel/actions/boggle_actions';
 import './App.scss';
-
 // TODO: remove Duplication 
-
 class Boggle extends Component {
 
 	constructor() {
 		super();
 
-		this.handleUserAnswers = this.handleUserAnswers.bind(this);
 		this.handleMouseDown = this.handleMouseDown.bind(this);
 		this.handleMouseUp = this.handleMouseUp.bind(this);
 		this.ToggleModal = this.ToggleModal.bind(this);
@@ -45,7 +42,7 @@ class Boggle extends Component {
 		}
 		
 		this.RunTimer();
-		this.props.new_game(RandomValues , availableAnswers);
+		this.props.new_game(RandomValues , uniqueNames);
 	}
 
 	RunTimer() {
@@ -66,25 +63,6 @@ class Boggle extends Component {
 		},1000);
 	}
 
-	handleUserAnswers(obj) {
-        let userAnswers = [...this.props.userAnswers];
-        let index = -1;
-        for (let i=0; i < userAnswers.length ; i++) {
-            if ( userAnswers[i].string === obj.string ) {
-				index = i;
-				break;
-            }
-        }
-		if ( index === -1 ) { userAnswers.push(obj); }
-		
-		console.log(userAnswers);
-		this.props.user_find_something(userAnswers);
-		if ( this.props.userAnswers.length === this.props.Answers.length) {
-			this.props.toggle_wining_status(true);
-			this.props.updateClock("00:00");
-		}
-	}
-
 	componentDidMount() {this.playGame(); }
 	componentWillUnmount() { clearTimeout(this.timeInterval); }
 
@@ -100,14 +78,13 @@ class Boggle extends Component {
 							</ul>
 						</nav>
 					</div>
-					<Game userAnswers={this.handleUserAnswers} />
+					<Game />
 				</div>
 				<Modal />
 			</div>
 		);
 	}
 }
-
 
 const mappropsToProps = (state) => {
 	return {

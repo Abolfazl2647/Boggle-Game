@@ -1,4 +1,4 @@
-import { NEW_GAME, TOGGLE_MODAL, USER_FIND_SOMETHING, CLOCK_UPDATE, TOGGLE_WINING_STATUS, TOUCH_START, TOUCH_END, SWIPE, DRAG } from '../actions/types';
+import { NEW_GAME, TOGGLE_MODAL, CLOCK_UPDATE, TOGGLE_WINING_STATUS, TOUCH_START, TOUCH_END, SWIPE, DRAG } from '../actions/types';
 
 const initialState = {
     clock: null,
@@ -46,6 +46,24 @@ const BoggleGame = (state = initialState , action ) => {
         }
     }
 
+    if (action.type === TOUCH_END) {
+        if ( action.peyload.userAnswers.length === state.Answers.length) {
+            return {
+                ...state,
+                clock:"00:00",
+                winingStatus: true,
+                selectedIds:[],
+            }
+		} else {
+            return {
+                ...state,
+                string:"",
+                selectedIds:[],
+                answerIds: action.peyload.answerIds,
+                userAnswers: action.peyload.userAnswers
+            }
+        }
+    }
 
     if (action.type === SWIPE) {
         return {
@@ -53,15 +71,6 @@ const BoggleGame = (state = initialState , action ) => {
              string: action.peyload.string, 
              selectedIds: action.peyload.selectedIds,
              selectedPath: action.peyload.selectedPath
-        }
-     }
-
-    if (action.type === TOUCH_END) {
-       return { 
-           ...state,
-           answerIds: action.peyload,
-           selectedIds:[],
-           string:""
         }
     }
 
@@ -84,14 +93,6 @@ const BoggleGame = (state = initialState , action ) => {
             winingStatus: action.peyload
         }
     }
-
-    if (action.type === USER_FIND_SOMETHING) {
-        return {
-            ...state,
-            userAnswers: action.peyload
-        }
-    }
-
     return state;
 }
 

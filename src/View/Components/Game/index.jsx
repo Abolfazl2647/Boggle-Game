@@ -75,20 +75,27 @@ class Game extends Component {
 
 	end() {
 		// back to defaults
+		let obj = {
+			string: this.props.string,
+			cells: this.props.selectedIds
+		}
 		let answerIds = [...this.props.answerIds];
+		let userAnswers = [...this.props.userAnswers];
+		
 		if ( Trie.contains(this.props.string) ) {
 			answerIds = answerIds.concat(this.props.selectedIds);
-			this.props.userAnswers({
-				string: this.props.string,
-				cells: this.props.selectedIds
-			});
+			let index = -1;
+			for (let i=0; i < userAnswers.length ; i++) {
+				if ( userAnswers[i].string === obj.string ) {
+					index = i;
+					break;
+				}
+			}
+			if ( index === -1 ) { userAnswers.push(obj); }
 		}
-		this.props.end_touch(answerIds);
+		
+		this.props.end_touch(answerIds,userAnswers);
 	}
-
-	// TODO: if user Win Or Loose show Alert
-	// TODO: PWA
-	// TODO: MVVM
 
 	render() {
 
@@ -131,7 +138,7 @@ class Game extends Component {
 				</div>
 				<div className="answer-list">
 					<p>کلمات یافت شده:</p>
-					{this.props.userPickups ? this.props.userPickups.map((item,index) => {
+					{this.props.userAnswers ? this.props.userAnswers.map((item,index) => {
 						return <span key={index}><i className="fa fa-tag" aria-hidden="true"></i><span>{item.string}</span></span>
 					}): null}
 				</div>
@@ -149,6 +156,7 @@ const mappropsToProps = (state) => {
 		selectedIds: state.Boggle.selectedIds,
 		selectedPath: state.Boggle.selectedPath,
 		answerIds: state.Boggle.answerIds,
+		userAnswers: state.Boggle.userAnswers,
 		string: state.Boggle.string,
 		draging: state.Boggle.draging,
 		help_visibility: state.Boggle.help_visibility,
