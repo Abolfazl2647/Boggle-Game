@@ -9,7 +9,7 @@ compose(
 ));
 
 // store.subscribe( () => {
-//     console.log('new State' , store);
+//     console.log('new State' , store.getState());
 // });
 
 export default store;

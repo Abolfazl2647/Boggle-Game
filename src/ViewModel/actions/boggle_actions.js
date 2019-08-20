@@ -1,4 +1,4 @@
-import { NEW_GAME, TOGGLE_MODAL, USER_FIND_SOMETHING, CLOCK_UPDATE, TOGGLE_WINING_STATUS, TOUCH_START, SWIPE } from './types';
+import { NEW_GAME, TOGGLE_MODAL, USER_FIND_SOMETHING, CLOCK_UPDATE, TOGGLE_WINING_STATUS, TOUCH_START, TOUCH_END, SWIPE, DRAG } from './types';
 
 export default {
     new_game : (tableVlaues, answers) => (dispatch) => {
@@ -34,16 +34,28 @@ export default {
             peyload: obj
         });
     },
-    start_touch: (item,pos) => (dispatch) => {
+    toggle_draging: (bool) => (dispatch) => {
         dispatch({
-            type: TOUCH_START,
-            peyload: {item,pos}
+            type: DRAG,
+            peyload: bool
         });
     },
-    swipe: (item,pos) => (dispatch) => {
+    start_touch: (string,selectedIds,selectedPath) => (dispatch) => {
+        dispatch({
+            type: TOUCH_START,
+            peyload: {string,selectedIds,selectedPath}
+        });
+    },
+    end_touch: (obj) => (dispatch) => {
+        dispatch({
+            type: TOUCH_END,
+            peyload: obj
+        });
+    },
+    swipe: (OBJ) => (dispatch) => {
         dispatch({
             type: SWIPE,
-            peyload: {item,pos}
+            peyload: OBJ
         })
     }
 }

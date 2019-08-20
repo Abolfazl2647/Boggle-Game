@@ -1,3 +1,4 @@
+export const DRAG = 'DRAG';
 export const SWIPE = 'SWIPE';
 export const NEW_GAME = 'NEW_GAME';
 export const TOUCH_END = 'TOUCH_END';

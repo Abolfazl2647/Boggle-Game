@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import Trie from '../../../Controller/Trie.js';
 import BoggleActions from '../../../ViewModel/actions/boggle_actions';
 import './Game.scss';
 
@@ -35,20 +36,54 @@ class Game extends Component {
 
 	start(item,pos) {
 		if ( this.props.winingStatus ) return;
-		this.props.start_touch(item,pos);
+		let selectedPath = [...this.props.selectedPath];
+		let selectedIds = [...this.props.selectedIds];
+		let string = this.props.string;
+			string += item.value;
+			selectedIds.push(item.id);
+			selectedPath.push(pos);
+			
+		this.props.start_touch(string,selectedIds,selectedPath);
 	}
 
 	handleMouseEnter(item,goingPos) {
-		if (this.props.loose) return;
 		if (!this.props.draging) return;
+		if (this.props.winingStatus) return;
 		if (this.allowDirection(goingPos)) {
-			this.props.swipe(item,goingPos);
+			
+			let selectedPath = [...this.props.selectedPath];
+			let selectedIds = [...this.props.selectedIds];
+			let string = this.props.string;
+
+			if ( !this.isBackward(goingPos)) {
+				string += item.value;
+				selectedIds.push(item.id);
+				selectedPath.push(goingPos);
+			} else {
+				selectedIds.pop();
+				selectedPath.pop();
+				string = string.slice(0, string.length-1);
+			}
+
+			this.props.swipe({
+				selectedPath,
+				selectedIds,
+				string
+			});
 		}
 	}
 
 	end() {
 		// back to defaults
-		this.props.touch_end();
+		let answerIds = [...this.props.answerIds];
+		if ( Trie.contains(this.props.string) ) {
+			answerIds = answerIds.concat(this.props.selectedIds);
+			this.props.userAnswers({
+				string: this.props.string,
+				cells: this.props.selectedIds
+			});
+		}
+		this.props.end_touch(answerIds);
 	}
 
 	// TODO: if user Win Or Loose show Alert
@@ -112,7 +147,10 @@ const mappropsToProps = (state) => {
 		tableValues: state.Boggle.tableValues,
 		winingStatus: state.Boggle.winingStatus,
 		selectedIds: state.Boggle.selectedIds,
+		selectedPath: state.Boggle.selectedPath,
 		answerIds: state.Boggle.answerIds,
+		string: state.Boggle.string,
+		draging: state.Boggle.draging,
 		help_visibility: state.Boggle.help_visibility,
 	}
 }

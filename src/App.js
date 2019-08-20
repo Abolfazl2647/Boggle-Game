@@ -3,6 +3,7 @@ import Game from './View/Components/Game';
 import Modal from './View/Components/Help';
 import Helper from './Controller/helper.js';
 import { connect } from 'react-redux';
+
 import BoggleActions from './ViewModel/actions/boggle_actions';
 import './App.scss';
 
@@ -22,13 +23,11 @@ class Boggle extends Component {
 
 		this.timer = 150;
 		this.timeInterval = null;
-		this.draging = false;
-
 	}
 
-	ToggleModal(bool) { this.props.toggle_modal(bool); }
-	handleMouseDown() { this.draging = true }
-	handleMouseUp() { this.draging = false }
+	ToggleModal(bool) { this.props.toggle_modal(bool) }
+	handleMouseDown() {this.props.toggle_draging(true)}
+	handleMouseUp() { this.props.toggle_draging(false)}
 
 	playGame() {
 		let RandomValues = Helper.generate_random_aplphabet();
@@ -68,8 +67,21 @@ class Boggle extends Component {
 	}
 
 	handleUserAnswers(obj) {
-		this.props.user_find_something(obj);
-		if ( this.props.userAnswers.length === this.props.availableAnswers.length) {
+		
+
+        let userAnswers = [...this.props.userAnswers];
+        let index = -1;
+        for (let i=0; i < userAnswers.length ; i++) {
+            if ( userAnswers[i].string === obj.string ) {
+				index = i;
+				break;
+            }
+        }
+        if ( index === -1 ) { userAnswers.push(obj); }
+
+		this.props.user_find_something(userAnswers);
+
+		if ( this.props.userAnswers.length === this.props.Answers.length) {
 			this.props.toggle_wining_status(true);
 			this.props.updateClock("00:00");
 		}
@@ -90,7 +102,8 @@ class Boggle extends Component {
 							</ul>
 						</nav>
 					</div>
-					<Game draging={this.draging} />
+					<Game 
+						userAnswers={this.handleUserAnswers} />
 				</div>
 				<Modal />
 			</div>
@@ -101,6 +114,7 @@ class Boggle extends Component {
 
 const mappropsToProps = (state) => {
 	return {
+		userAnswers: state.Boggle.userAnswers,
 		tableValues: state.Boggle.tableValues,
 		availableAnswers: state.Boggle.availableAnswers,
 		help_visibility: state.Boggle.help_visibility,
