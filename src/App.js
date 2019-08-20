@@ -32,21 +32,21 @@ class Boggle extends Component {
 
 	playGame() {
 		let RandomValues = Helper.generate_random_aplphabet();
-		let Answers = Helper.find_answer(RandomValues);
+		let availableAnswers = Helper.find_answer(RandomValues);
 		// we need at least ten word to be found
 		// remove duplicate data
 		var uniqueNames = [];
-		Answers.forEach((item) => {
+		availableAnswers.forEach((item) => {
 			if ( uniqueNames.indexOf(item) === -1) uniqueNames.push(item);
 		});
 
-		if ( Answers.length < 10 ) {
+		if ( availableAnswers.length < 10 ) {
 			this.playGame();
 			return;
 		}
 		
 		this.RunTimer();
-		this.props.new_game(RandomValues , Answers);
+		this.props.new_game(RandomValues , availableAnswers);
 	}
 
 	RunTimer() {

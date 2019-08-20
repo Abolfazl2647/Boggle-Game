@@ -1,8 +1,7 @@
-import { NEW_GAME, TOGGLE_MODAL, USER_FIND_SOMETHING, CLOCK_UPDATE, TOGGLE_WINING_STATUS } from './types';
+import { NEW_GAME, TOGGLE_MODAL, USER_FIND_SOMETHING, CLOCK_UPDATE, TOGGLE_WINING_STATUS, TOUCH_START, SWIPE } from './types';
 
 export default {
     new_game : (tableVlaues, answers) => (dispatch) => {
-        console.log("NEW GAME")
         dispatch({
             type: NEW_GAME,
             peyload: {
@@ -34,5 +33,17 @@ export default {
             type: USER_FIND_SOMETHING,
             peyload: obj
         });
+    },
+    start_touch: (item,pos) => (dispatch) => {
+        dispatch({
+            type: TOUCH_START,
+            peyload: {item,pos}
+        });
+    },
+    swipe: (item,pos) => (dispatch) => {
+        dispatch({
+            type: SWIPE,
+            peyload: {item,pos}
+        })
     }
 }

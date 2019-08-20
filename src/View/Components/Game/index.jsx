@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import BoggleActions from '../../../ViewModel/actions/boggle_actions';
-import Trie from '../../../Controller/Trie.js';
 import './Game.scss';
 
 class Game extends Component {
@@ -14,16 +13,9 @@ class Game extends Component {
 		this.end = this.end.bind(this);
 	}
 
-	state = {
-		string:"",
-		answerIds:[],
-		selectedIds:[],
-		selectedPath: []
-	}
-
 	allowDirection(pos) {
 		let direction = null;
-		let lastPos = this.state.selectedPath[this.state.selectedPath.length-1];
+		let lastPos = this.props.selectedPath[this.props.selectedPath.length-1];
 		if ( lastPos.col === pos.col && lastPos.row+1 === pos.row  ) { direction = "right"
 		} else if ( lastPos.col === pos.col && lastPos.row-1 === pos.row ) { direction = "left"
 		} else if ( lastPos.row === pos.row && lastPos.col+1 === pos.col ) { direction = "down"
@@ -33,7 +25,7 @@ class Game extends Component {
 	}
 
 	isBackward(goingPos) {
-		let lastPos = this.state.selectedPath[this.state.selectedPath.length-2];
+		let lastPos = this.props.selectedPath[this.props.selectedPath.length-2];
 		if ( lastPos ){
 			return (goingPos.row === lastPos.row && goingPos.col === lastPos.col);
 		} else {
@@ -42,54 +34,26 @@ class Game extends Component {
 	}
 
 	start(item,pos) {
-		// set start position , string and id
-		// add string
-		if (this.props.loose) return;
-		let selectedPath = [...this.state.selectedPath];
-		let selectedIds = [...this.state.selectedIds];
-		let string = this.state.string;
-			string += item.value;
-			selectedIds.push(item.id);
-			selectedPath.push(pos);
-		this.setState({string, selectedIds, selectedPath})
+		if ( this.props.winingStatus ) return;
+		this.props.start_touch(item,pos);
 	}
 
 	handleMouseEnter(item,goingPos) {
 		if (this.props.loose) return;
 		if (!this.props.draging) return;
 		if (this.allowDirection(goingPos)) {
-			let selectedPath = [...this.state.selectedPath];
-			let selectedIds = [...this.state.selectedIds];
-			let string = this.state.string;
-			if ( !this.isBackward(goingPos)) {
-				string += item.value;
-				selectedIds.push(item.id);
-				selectedPath.push(goingPos);
-			} else {
-				selectedIds.pop();
-				selectedPath.pop();
-				string = string.slice(0, string.length-1);
-			}
-			this.setState({string, selectedIds, selectedPath});
+			this.props.swipe(item,goingPos);
 		}
 	}
 
 	end() {
-		let answerIds = [...this.state.answerIds];
-		if ( Trie.contains(this.state.string) ) {
-			answerIds = answerIds.concat(this.state.selectedIds);
-			this.props.userAnswers({
-				string: this.state.string,
-				cells: this.state.selectedIds
-			});
-		}
 		// back to defaults
-		this.setState({answerIds, selectedIds:[], string:""});
+		this.props.touch_end();
 	}
 
 	// TODO: if user Win Or Loose show Alert
 	// TODO: PWA
-	// TODO: MVC
+	// TODO: MVVM
 
 	render() {
 
@@ -101,8 +65,8 @@ class Game extends Component {
 						<span>کلمات موجود:</span>
 						<span className="num">{this.props.Answers ? this.props.Answers.length : null}</span>
 					</label>
-					<p className={(this.props.win ? " win " : "") + (this.props.loose ? " loose " : "") + "currentString"}>
-						{(this.props.win) ? "برنده شدید" : (this.props.loose) ? " باختی " : this.state.string}
+					<p className={(this.props.winingStatus ? " win " : " loose ") + "currentString"}>
+						{(this.props.clock === "00:00") ? (this.props.winingStatus) ? " باختی " : "برنده شدید" : null}
 					</p>
 					<label className="clock">
 						<span className="num">{this.props.clock}</span>
@@ -119,17 +83,16 @@ class Game extends Component {
 
 						return (
 							<div className={
-								(this.props.win ? " win " : "") +
-								(this.props.loose ? " loose " : "") +
-								(this.state.selectedIds.indexOf(item.id) !== -1 ? " active " : "") + 
-								(this.state.answerIds.indexOf(item.id) !== -1 ? " answer " : "") + " cell "}
+								(this.props.clock === "00:00" ? this.props.winingStatus ? " win " : "loose" : "") +
+								(this.props.selectedIds.indexOf(item.id) !== -1 ? " active " : "") + 
+								(this.props.answerIds.indexOf(item.id) !== -1 ? " answer " : "") + " cell "}
 								key={item.id}
 								unselectable="on"
 								onMouseUp={this.end}
 								onMouseDown={()=> {this.start(item,pos)}}
-								onMouseEnter={()=> {this.handleMouseEnter(item,pos)}}>{item.value}</div>
-						)
-					}) : null}
+								onMouseEnter={()=> {this.handleMouseEnter(item,pos)}}>{item.value}
+							</div>)
+							}) : null}
 				</div>
 				<div className="answer-list">
 					<p>کلمات یافت شده:</p>
@@ -144,11 +107,13 @@ class Game extends Component {
 
 const mappropsToProps = (state) => {
 	return {
+		clock: state.Boggle.clock,
+		Answers: state.Boggle.Answers,
 		tableValues: state.Boggle.tableValues,
-		availableAnswers: state.Boggle.availableAnswers,
-		help_visibility: state.Boggle.help_visibility,
 		winingStatus: state.Boggle.winingStatus,
-		clock: state.Boggle.clock
+		selectedIds: state.Boggle.selectedIds,
+		answerIds: state.Boggle.answerIds,
+		help_visibility: state.Boggle.help_visibility,
 	}
 }
 

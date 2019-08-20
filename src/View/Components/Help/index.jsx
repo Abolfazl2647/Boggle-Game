@@ -32,7 +32,7 @@ class Modal extends Component {
                 <div className="Modal" ref={this.wrapperRef}>
                     <p><i className="fa fa-tags" aria-hidden="true"></i><span>راهنما</span></p>
                     <ul>
-                        {this.props.availableAnswers ? this.props.availableAnswers.map((item,index)=>{
+                        {this.props.Answers ? this.props.Answers.map((item,index)=>{
                             return <li key={index} className={ (userAnswers.indexOf(item) !== -1) ? "found" : "" }><i className="fa fa-tag" aria-hidden="true"></i><span>{item}</span></li>
                         }) : null} 
                     </ul>
@@ -45,7 +45,7 @@ class Modal extends Component {
 
 const mappropsToProps = (state) => {
 	return {
-		availableAnswers: state.Boggle.availableAnswers,
+		Answers: state.Boggle.Answers,
 		help_visibility: state.Boggle.help_visibility,
 	}
 }
