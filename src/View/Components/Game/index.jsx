@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
+import BoggleActions from '../../../ViewModel/actions/boggle_actions';
 import Trie from '../../../Controller/Trie.js';
 import './Game.scss';
 
-export default class Game extends Component {
+class Game extends Component {
 	constructor(props){
 		super(props);
 		this.handleMouseEnter = this.handleMouseEnter.bind(this);
@@ -92,13 +94,12 @@ export default class Game extends Component {
 	render() {
 
 		let row=-1,col=0;
-
 		return (
 			<div className="Game-Wrapper">
 				<div className="Game-Header">
 					<label className="total-words">
 						<span>کلمات موجود:</span>
-						<span className="num">{this.props.Answers.length}</span>
+						<span className="num">{this.props.Answers ? this.props.Answers.length : null}</span>
 					</label>
 					<p className={(this.props.win ? " win " : "") + (this.props.loose ? " loose " : "") + "currentString"}>
 						{(this.props.win) ? "برنده شدید" : (this.props.loose) ? " باختی " : this.state.string}
@@ -109,8 +110,7 @@ export default class Game extends Component {
 					</label>
 				</div>
 				<div className="Game">
-					{this.props.tableValues.map((item) => {
-
+					{ this.props.tableValues ? this.props.tableValues.map((item) => {
 						// makeing index for table
 						if ( row >= 4 ) {
 							col++;row = 0;
@@ -129,7 +129,7 @@ export default class Game extends Component {
 								onMouseDown={()=> {this.start(item,pos)}}
 								onMouseEnter={()=> {this.handleMouseEnter(item,pos)}}>{item.value}</div>
 						)
-					})}
+					}) : null}
 				</div>
 				<div className="answer-list">
 					<p>کلمات یافت شده:</p>
@@ -141,3 +141,15 @@ export default class Game extends Component {
 		);
 	}
 }
+
+const mappropsToProps = (state) => {
+	return {
+		tableValues: state.Boggle.tableValues,
+		availableAnswers: state.Boggle.availableAnswers,
+		help_visibility: state.Boggle.help_visibility,
+		winingStatus: state.Boggle.winingStatus,
+		clock: state.Boggle.clock
+	}
+}
+
+export default connect( mappropsToProps , BoggleActions )(Game);

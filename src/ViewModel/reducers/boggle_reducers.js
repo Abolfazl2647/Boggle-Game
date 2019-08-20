@@ -12,12 +12,11 @@ const initialState = {
 const BoggleGame = (state = initialState , action ) => {
 
     if ( action.type === NEW_GAME ) {
-        
-        let obj = action.peyload;
         return {
             ...state,
             initialState,
-            obj
+            tableValues: action.peyload.tableVlaues,
+            availableAnswers: action.peyload.answers,
         };
     }
 

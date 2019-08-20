@@ -2,11 +2,13 @@ import React , { Component } from 'react';
 import Game from './View/Components/Game';
 import Modal from './View/Components/Help';
 import Helper from './Controller/helper.js';
+import { connect } from 'react-redux';
+import BoggleActions from './ViewModel/actions/boggle_actions';
 import './App.scss';
 
 // TODO: remove Duplication 
 
-export default class Boggle extends Component {
+class Boggle extends Component {
 
 	constructor() {
 		super();
@@ -15,34 +17,25 @@ export default class Boggle extends Component {
 		this.handleMouseDown = this.handleMouseDown.bind(this);
 		this.handleMouseUp = this.handleMouseUp.bind(this);
 		this.ToggleModal = this.ToggleModal.bind(this);
-		this.handleHelp = this.handleHelp.bind(this);
 		this.playGame = this.playGame.bind(this);
 		this.RunTimer = this.RunTimer.bind(this);
-		this.timer = null;
+
+		this.timer = 150;
+		this.timeInter = null;
+		this.draging = false;
+
 	}
 
 	state = {
-		needHelp:false,
-		draging: false,
-		availableAnswers:[],
+		clock: null,
 		userAnswers:[],
-		tableValues:[],
-		win: false,
-		loose: false,
-		time: 10,
-		clock: null
+		winingStatus: false,
+		help_visibility:false,
 	}
 
-	handleHelp() {
-		this.setState({needHelp: !this.state.needHelp});
-	}
-
-	ToggleModal(bool) {
-		this.setState({needHelp: bool});
-	}
-
-	handleMouseDown() { this.setState({draging:true}) }
-	handleMouseUp() { this.setState({draging:false}) }
+	ToggleModal(bool) { this.props.toggle_modal(bool); }
+	handleMouseDown() { this.draging = true }
+	handleMouseUp() { this.draging = false }
 
 	playGame() {
 		let RandomValues = Helper.generate_random_aplphabet();
@@ -60,34 +53,23 @@ export default class Boggle extends Component {
 		}
 
 		this.RunTimer();
-		this.setState({
-			tableValues: RandomValues,
-			availableAnswers: uniqueNames,
-			userAnswers:[],
-			win: false,
-			loose: false,
-			time: 10,
-		});
+		this.props.new_game(RandomValues , Answers);
 	}
 
 	RunTimer() {
-		let timer = this.state.time;
-		clearTimeout(this.timer);
-		this.timer = setInterval(() => {
-			timer--;	
-			this.setState({time: timer}, () => {
-				let min = parseInt(this.state.time / 60);
-				let sec = this.state.time % 60;
-				if ( sec < 10 )  sec = "0" + sec;
-				if ( !this.state.win ) {
-					this.setState({clock: min+":"+sec},() => {
-						if ( this.state.time === 0) {
-							clearTimeout(this.timer);
-							this.setState({loose: true});
-						}
-					});
+		clearTimeout(this.timeInter);
+		this.timeInter = setInterval(() => {
+			this.timer--;
+			let min = parseInt(this.timer / 60);
+			let sec = this.timer % 60;
+			if ( sec < 10 ) sec = "0"+sec;
+			if ( !this.props.winingStatus ) {
+				this.props.updateClock(min+":"+sec);
+				if ( this.timer === 0) {
+					clearTimeout(this.timeInter);
+					this.props.toggle_wining_status(false);
 				}
-			});		
+			}	
 		},1000);
 	}
 
@@ -106,9 +88,9 @@ export default class Boggle extends Component {
 	}
 
 	componentDidMount() {this.playGame(); }
-	componentWillUnmount() { clearTimeout(this.timer); }
+	componentWillUnmount() { clearTimeout(this.timeInter); }
 	componentDidUpdate() {
-		if ( this.state.time === 10 ) {
+		if ( this.timer === 150 ) {
 			this.RunTimer();
 		}
 	}
@@ -116,31 +98,40 @@ export default class Boggle extends Component {
 	render() {
 		return (
 			<div className="App" onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp}>
-				<div className={((this.state.needHelp) ? " blur " : "" )}>
+				<div className={((this.props.help_visibility) ? " blur " : "" )}>
 					<div className="Menu">
 						<nav>
 							<ul className="actions">
 								<li><button className="new" onClick={this.playGame}><i className="fa fa-gamepad" aria-hidden="true"></i><span> بازی جدید </span></button></li>
-								<li><button className="help" onClick={this.handleHelp}><i className="fa fa-exclamation" aria-hidden="true"></i><span> راهنما </span></button></li>
+								<li><button className="help" onClick={() => {this.ToggleModal(null)}}><i className="fa fa-exclamation" aria-hidden="true"></i><span> راهنما </span></button></li>
 							</ul>
 						</nav>
 					</div>
 					<Game 
-						win={this.state.win}
-						loose={this.state.loose}
-						clock={this.state.clock}
-						draging={this.state.draging} 
-						tableValues={this.state.tableValues}
+						clock={this.props.clock}
+						draging={this.draging}
 						userPickups={this.state.userAnswers}
-						userAnswers={this.handleUserAnswers}
-						Answers={this.state.availableAnswers} />
+						userAnswers={this.handleUserAnswers} />
 				</div>
 				<Modal 
-					visibility={this.state.needHelp} 
+					visibility={this.props.help_visibility} 
 					ToggleModal={this.ToggleModal} 
 					userPickups={this.state.userAnswers}
-					Answers={this.state.availableAnswers} />
+					Answers={this.props.availableAnswers} />
 			</div>
 		);
 	}
 }
+
+
+const mappropsToProps = (state) => {
+	return {
+		tableValues: state.Boggle.tableValues,
+		availableAnswers: state.Boggle.availableAnswers,
+		help_visibility: state.Boggle.help_visibility,
+		winingStatus: state.Boggle.winingStatus,
+		clock: state.Boggle.clock
+	}
+}
+
+export default connect( mappropsToProps , BoggleActions )(Boggle);
