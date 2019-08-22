@@ -30,9 +30,7 @@ const BoggleGame = (state = initialState , action ) => {
         // add string
 		return {
             ...state,
-            string: action.peyload.string, 
-            selectedIds: action.peyload.selectedIds,
-            selectedPath: action.peyload.selectedPath
+            string: action.peyload.string,
         }
     }
 
@@ -42,14 +40,11 @@ const BoggleGame = (state = initialState , action ) => {
                 ...state,
                 clock:"0:00",
                 winingStatus: true,
-                selectedIds:[],
             }
 		} else {
             return {
                 ...state,
                 string:"",
-                selectedIds:[],
-                selectedPath:[],
                 answerIds: action.peyload.answerIds,
                 userAnswers: action.peyload.userAnswers
             }
@@ -59,9 +54,7 @@ const BoggleGame = (state = initialState , action ) => {
     if (action.type === SWIPE) {
         return {
              ...state,
-             string: action.peyload.string, 
-             selectedIds: action.peyload.selectedIds,
-             selectedPath: action.peyload.selectedPath
+             string: action.peyload.string,
         }
     }
 

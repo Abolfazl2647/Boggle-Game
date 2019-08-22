@@ -12,11 +12,14 @@ class Game extends Component {
 		this.isBackward = this.isBackward.bind(this);
 		this.start = this.start.bind(this);
 		this.end = this.end.bind(this);
+
+		this.selectedIds = [];
+		this.selectedPath = [];
 	}
 
 	allowDirection(pos) {
 		let direction = null;
-		let lastPos = this.props.selectedPath[this.props.selectedPath.length-1];
+		let lastPos = this.selectedPath[this.selectedPath.length-1];
 		if ( lastPos.col === pos.col && lastPos.row+1 === pos.row  ) { direction = "right"
 		} else if ( lastPos.col === pos.col && lastPos.row-1 === pos.row ) { direction = "left"
 		} else if ( lastPos.row === pos.row && lastPos.col+1 === pos.col ) { direction = "down"
@@ -26,8 +29,8 @@ class Game extends Component {
 	}
 
 	isBackward(goingPos) {
-		let lastPos = this.props.selectedPath[this.props.selectedPath.length-2];
-		let beforePos = this.props.selectedPath[this.props.selectedPath.length-1];
+		let lastPos = this.selectedPath[this.selectedPath.length-2];
+		let beforePos = this.selectedPath[this.selectedPath.length-1];
 		if ( lastPos ) {
 			if (goingPos.row === lastPos.row && goingPos.col === lastPos.col) return "-"; 
 		}
@@ -40,13 +43,11 @@ class Game extends Component {
 	start(item,pos) {
 		this.draging = true;
 		if ( this.props.winingStatus ) return;
-		let selectedPath = [...this.props.selectedPath];
-		let selectedIds = [...this.props.selectedIds];
 		let string = this.props.string;
 			string += item.value;
-			selectedIds.push(item.id);
-			selectedPath.push(pos);
-		this.props.start_touch(string,selectedIds,selectedPath);
+			this.selectedIds.push(item.id);
+			this.selectedPath.push(pos);
+		this.props.start_touch(string);
 	}
 
 	handleMouseEnter(item,goingPos) {
@@ -54,27 +55,20 @@ class Game extends Component {
 		if (this.props.winingStatus) return;
 		if (this.allowDirection(goingPos)) {
 			
-			let selectedPath = [...this.props.selectedPath];
-			let selectedIds = [...this.props.selectedIds];
 			let string = this.props.string;
-
 			let calc = this.isBackward(goingPos);
 
 			if ( calc === "-") {
-				selectedIds.pop();
-				selectedPath.pop();
+				this.selectedIds.pop();
+				this.selectedPath.pop();
 				string = string.slice(0, string.length-1);
 			} else if (calc === "+"){
 				string += item.value;
-				selectedIds.push(item.id);
-				selectedPath.push(goingPos);
+				this.selectedIds.push(item.id);
+				this.selectedPath.push(goingPos);
 			}
 
-			this.props.swipe({
-				selectedPath,
-				selectedIds,
-				string
-			});
+			this.props.swipe({string});
 		}
 	}
 
@@ -83,13 +77,13 @@ class Game extends Component {
 		this.draging = false;
 		let obj = {
 			string: this.props.string,
-			cells: this.props.selectedIds
+			cells: this.selectedIds
 		}
 		let answerIds = [...this.props.answerIds];
 		let userAnswers = [...this.props.userAnswers];
 		
 		if ( Trie.contains(this.props.string) ) {
-			answerIds = answerIds.concat(this.props.selectedIds);
+			answerIds = answerIds.concat(this.selectedIds);
 			let index = -1;
 			for (let i=0; i < userAnswers.length ; i++) {
 				if ( userAnswers[i].string === obj.string ) {
@@ -100,6 +94,8 @@ class Game extends Component {
 			if ( index === -1 ) { userAnswers.push(obj); }
 		}
 		
+		this.selectedIds = [];
+		this.selectedPath = [];
 		this.props.end_touch(answerIds,userAnswers);
 	}
 
@@ -131,7 +127,7 @@ class Game extends Component {
 						return (
 							<div className={
 								(this.props.clock === "0:00" ? this.props.winingStatus ? " win " : "loose" : "") +
-								(this.props.selectedIds.indexOf(item.id) !== -1 ? " active " : "") + " cell "}
+								(this.selectedIds.indexOf(item.id) !== -1 ? " active " : "") + " cell "}
 								key={item.id}
 								unselectable="on"
 								onMouseUp={this.end}

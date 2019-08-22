@@ -28,10 +28,10 @@ export default {
             peyload: bool
         })
     },
-    start_touch: (string,selectedIds,selectedPath) => (dispatch) => {
+    start_touch: (string) => (dispatch) => {
         dispatch({
             type: TOUCH_START,
-            peyload: {string,selectedIds,selectedPath}
+            peyload: {string}
         });
     },
     end_touch: (answerIds,userAnswers) => (dispatch) => {
