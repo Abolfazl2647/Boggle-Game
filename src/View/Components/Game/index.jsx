@@ -27,14 +27,18 @@ class Game extends Component {
 
 	isBackward(goingPos) {
 		let lastPos = this.props.selectedPath[this.props.selectedPath.length-2];
-		if ( lastPos ){
-			return (goingPos.row === lastPos.row && goingPos.col === lastPos.col);
-		} else {
-			return false;
+		let beforePos = this.props.selectedPath[this.props.selectedPath.length-1];
+		if ( lastPos ) {
+			if (goingPos.row === lastPos.row && goingPos.col === lastPos.col) return "-"; 
 		}
+		if ( beforePos ) {
+			if (goingPos.row === beforePos.row && goingPos.col === beforePos.col) return "=";
+		}
+		return "+";
 	}
 
 	start(item,pos) {
+		this.draging = true;
 		if ( this.props.winingStatus ) return;
 		let selectedPath = [...this.props.selectedPath];
 		let selectedIds = [...this.props.selectedIds];
@@ -42,12 +46,11 @@ class Game extends Component {
 			string += item.value;
 			selectedIds.push(item.id);
 			selectedPath.push(pos);
-			
 		this.props.start_touch(string,selectedIds,selectedPath);
 	}
 
 	handleMouseEnter(item,goingPos) {
-		if (!this.props.draging) return;
+		if (!this.draging) return;
 		if (this.props.winingStatus) return;
 		if (this.allowDirection(goingPos)) {
 			
@@ -55,14 +58,16 @@ class Game extends Component {
 			let selectedIds = [...this.props.selectedIds];
 			let string = this.props.string;
 
-			if ( !this.isBackward(goingPos)) {
-				string += item.value;
-				selectedIds.push(item.id);
-				selectedPath.push(goingPos);
-			} else {
+			let calc = this.isBackward(goingPos);
+
+			if ( calc === "-") {
 				selectedIds.pop();
 				selectedPath.pop();
 				string = string.slice(0, string.length-1);
+			} else if (calc === "+"){
+				string += item.value;
+				selectedIds.push(item.id);
+				selectedPath.push(goingPos);
 			}
 
 			this.props.swipe({
@@ -75,6 +80,7 @@ class Game extends Component {
 
 	end() {
 		// back to defaults
+		this.draging = false;
 		let obj = {
 			string: this.props.string,
 			cells: this.props.selectedIds
@@ -119,16 +125,13 @@ class Game extends Component {
 				<div className="Game">
 					{ this.props.tableValues ? this.props.tableValues.map((item) => {
 						// makeing index for table
-						if ( row >= 4 ) {
-							col++;row = 0;
-						} else { row++ };
+						if( row >= 4 ){col++;row = 0;}else{ row++ };
 						let pos = {row,col};
 
 						return (
 							<div className={
 								(this.props.clock === "0:00" ? this.props.winingStatus ? " win " : "loose" : "") +
-								(this.props.selectedIds.indexOf(item.id) !== -1 ? " active " : "") + 
-								(this.props.answerIds.indexOf(item.id) !== -1 ? " answer " : "") + " cell "}
+								(this.props.selectedIds.indexOf(item.id) !== -1 ? " active " : "") + " cell "}
 								key={item.id}
 								unselectable="on"
 								onMouseUp={this.end}
@@ -159,7 +162,6 @@ const mappropsToProps = (state) => {
 		answerIds: state.Boggle.answerIds,
 		userAnswers: state.Boggle.userAnswers,
 		string: state.Boggle.string,
-		draging: state.Boggle.draging,
 		help_visibility: state.Boggle.help_visibility,
 	}
 }

@@ -10,9 +10,6 @@ class Boggle extends Component {
 
 	constructor() {
 		super();
-
-		this.handleMouseDown = this.handleMouseDown.bind(this);
-		this.handleMouseUp = this.handleMouseUp.bind(this);
 		this.ToggleModal = this.ToggleModal.bind(this);
 		this.playGame = this.playGame.bind(this);
 		this.RunTimer = this.RunTimer.bind(this);
@@ -22,8 +19,6 @@ class Boggle extends Component {
 	}
 
 	ToggleModal(bool) { this.props.toggle_modal(bool) }
-	handleMouseDown() {this.props.toggle_draging(true)}
-	handleMouseUp() { this.props.toggle_draging(false)}
 
 	playGame() {
 		this.timer = 150;
@@ -68,7 +63,7 @@ class Boggle extends Component {
 
 	render() {
 		return (
-			<div className="App" onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp}>
+			<div className="App">
 				<div className={((this.props.help_visibility) ? " blur " : "" )}>
 					<div className="Menu">
 						<nav>

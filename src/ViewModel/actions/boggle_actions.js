@@ -1,4 +1,4 @@
-import { NEW_GAME, TOGGLE_MODAL, CLOCK_UPDATE, TOGGLE_WINING_STATUS, TOUCH_START, TOUCH_END, SWIPE, DRAG } from './types';
+import { NEW_GAME, TOGGLE_MODAL, CLOCK_UPDATE, TOGGLE_WINING_STATUS, TOUCH_START, TOUCH_END, SWIPE } from './types';
 
 export default {
     new_game : (tableVlaues, answers) => (dispatch) => {
@@ -27,12 +27,6 @@ export default {
             type: TOGGLE_WINING_STATUS,
             peyload: bool
         })
-    },
-    toggle_draging: (bool) => (dispatch) => {
-        dispatch({
-            type: DRAG,
-            peyload: bool
-        });
     },
     start_touch: (string,selectedIds,selectedPath) => (dispatch) => {
         dispatch({

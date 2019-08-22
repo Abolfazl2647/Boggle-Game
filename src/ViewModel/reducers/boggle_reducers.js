@@ -1,4 +1,4 @@
-import { NEW_GAME, TOGGLE_MODAL, CLOCK_UPDATE, TOGGLE_WINING_STATUS, TOUCH_START, TOUCH_END, SWIPE, DRAG } from '../actions/types';
+import { NEW_GAME, TOGGLE_MODAL, CLOCK_UPDATE, TOGGLE_WINING_STATUS, TOUCH_START, TOUCH_END, SWIPE } from '../actions/types';
 
 const initialState = {
     clock: null,
@@ -8,7 +8,6 @@ const initialState = {
     selectedPath:[],
     selectedIds:[],
     Answers:[],
-    draging: false,
     string: "",
     gameResult: "",
     winingStatus: false,
@@ -16,13 +15,6 @@ const initialState = {
 }
 
 const BoggleGame = (state = initialState , action ) => {
-
-    if (action.type === DRAG) {
-        return {
-            ...state,
-            draging: action.peyload
-        }
-    }
 
     if (action.type === NEW_GAME) {
         return {
@@ -60,6 +52,7 @@ const BoggleGame = (state = initialState , action ) => {
                 ...state,
                 string:"",
                 selectedIds:[],
+                selectedPath:[],
                 answerIds: action.peyload.answerIds,
                 userAnswers: action.peyload.userAnswers
             }
