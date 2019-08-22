@@ -33,7 +33,7 @@ class Modal extends Component {
                     <p><i className="fa fa-tags" aria-hidden="true"></i><span>راهنما</span></p>
                     <ul>
                         {this.props.Answers ? this.props.Answers.map((item,index)=>{
-                            return <li key={index} className={ (userAnswers.indexOf(item) !== -1) ? "found" : "" }><i className="fa fa-tag" aria-hidden="true"></i><span>{item}</span></li>
+                            return <li key={index} className={ (userAnswers.indexOf(item) !== -1) ? "found" : "" }><i className={ (userAnswers.indexOf(item) !== -1) ? "fa fa-check" : "fa fa-tag" } aria-hidden="true"></i><span>{item}</span></li>
                         }) : null} 
                     </ul>
                 </div>

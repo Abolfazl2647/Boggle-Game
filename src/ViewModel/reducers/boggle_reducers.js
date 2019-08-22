@@ -19,10 +19,7 @@ const BoggleGame = (state = initialState , action ) => {
     if (action.type === NEW_GAME) {
         return {
             ...state,
-            clock: null,
-            userAnswers:[],
-            winingStatus: false,
-            help_visibility:false,
+            ...initialState,
             Answers: action.peyload.answers,
             tableValues: action.peyload.tableVlaues,
         };
