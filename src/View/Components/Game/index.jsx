@@ -4,6 +4,16 @@ import Trie from '../../../Controller/Trie.js';
 import BoggleActions from '../../../ViewModel/actions/boggle_actions';
 import './Game.scss';
 
+import { CustomGesture, moves } from 'react-touch';
+import { parse } from 'handlebars';
+
+const CIRCLE = [
+	moves.UP,
+	moves.RIGHT,
+	moves.DOWN,
+	moves.LEFT
+];
+
 class Game extends Component {
 	constructor(props){
 		super(props);
@@ -12,6 +22,10 @@ class Game extends Component {
 		this.isBackward = this.isBackward.bind(this);
 		this.start = this.start.bind(this);
 		this.end = this.end.bind(this);
+
+		this.touch_start = this.touch_start.bind(this);
+		this.touch_move = this.touch_move.bind(this);
+		this.touch_end = this.touch_end.bind(this);
 
 		this.selectedIds = [];
 		this.selectedPath = [];
@@ -99,10 +113,89 @@ class Game extends Component {
 		this.props.end_touch(answerIds,userAnswers);
 	}
 
+	touch_start(event) {
+		let element = document.elementFromPoint(event.touches[0].clientX, event.touches[0].clientY);
+		let classList = element.classList.value.split(" ");
+		if (classList.indexOf('cell') === -1 ) return;
+
+		let pos = {
+			row: parseInt(element.dataset.row),
+			col: parseInt( element.dataset.col)
+		}
+
+		this.draging = true;
+		if ( this.props.winingStatus ) return;
+		let string = this.props.string;
+			string += element.innerText;
+			this.selectedIds.push(element.dataset.id);
+			this.selectedPath.push(pos);
+		this.props.start_touch(string);
+	}
+
+	touch_move(event) {
+		// console.log(event.touches)
+		let element = document.elementFromPoint(event.touches[0].clientX, event.touches[0].clientY);
+		let classList = element.classList.value.split(" ");
+		if (classList.indexOf('cell') === -1 ) return;
+
+		let goingPos = {
+			row: parseInt(element.dataset.row),
+			col: parseInt( element.dataset.col)
+		}
+	
+
+		console.log(this.allowDirection(goingPos))
+
+		if (!this.draging) return;
+		if (this.props.winingStatus) return;
+		if (this.allowDirection(goingPos)) {
+
+			let string = this.props.string;
+			let calc = this.isBackward(goingPos);
+			if ( calc === "-") {
+				this.selectedIds.pop();
+				this.selectedPath.pop();
+				string = string.slice(0, string.length-1);
+			} else if (calc === "+"){
+				string += element.innerText;
+				this.selectedIds.push(element.dataset.id);
+				this.selectedPath.push(goingPos);
+			}
+
+			console.log(string);
+			this.props.swipe({string});
+		}
+	}
+
+	touch_end() {
+		// back to defaults
+		this.draging = false;
+		let obj = {
+			string: this.props.string,
+			cells: this.selectedIds
+		}
+		let answerIds = [...this.props.answerIds];
+		let userAnswers = [...this.props.userAnswers];
+		
+		if ( Trie.contains(this.props.string) ) {
+			answerIds = answerIds.concat(this.selectedIds);
+			let index = -1;
+			for (let i=0; i < userAnswers.length ; i++) {
+				if ( userAnswers[i].string === obj.string ) {
+					index = i;
+					break;
+				}
+			}
+			if ( index === -1 ) { userAnswers.push(obj); }
+		}
+		
+		this.selectedIds = [];
+		this.selectedPath = [];
+		this.props.end_touch(answerIds,userAnswers);
+	}
+
 	render() {
-
 		let row=-1,col=0;
-
 		return (
 			<div className="Game-Wrapper">
 				<div className="Game-Header">
@@ -118,16 +211,16 @@ class Game extends Component {
 						<span className="clock fa fa-clock-o"></span>
 					</label>
 				</div>
-				<div className="Game">
+				<div className="Game" onTouchMove={this.touch_move} onTouchEnd={this.touch_end} onTouchStart={this.touch_start}>
 					{ this.props.tableValues ? this.props.tableValues.map((item) => {
 						// makeing index for table
 						if( row >= 4 ){col++;row = 0;}else{ row++ };
 						let pos = {row,col};
 
 						return (
-							<div className={
+							<div data-row={row} data-col={col} data-id={item.id} className={
 								(this.props.clock === "0:00" ? this.props.winingStatus ? " win " : "loose" : "") +
-								(this.selectedIds.indexOf(item.id) !== -1 ? " active " : "") + " cell "}
+								(this.selectedIds.indexOf(item.id) !== -1 ? " active " : "") + " cell Amir"}
 								key={item.id}
 								unselectable="on"
 								onMouseUp={this.end}

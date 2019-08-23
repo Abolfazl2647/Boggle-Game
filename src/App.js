@@ -31,7 +31,7 @@ class Boggle extends Component {
 			if ( uniqueNames.indexOf(item) === -1) uniqueNames.push(item);
 		});
 
-		if ( availableAnswers.length < 10 ) {
+		if ( uniqueNames.length < 10 ) {
 			this.playGame();
 			return;
 		}
