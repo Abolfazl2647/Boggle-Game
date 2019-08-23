@@ -1,8 +1,5 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-### Highlights
-And Using Trie Algorithm for search the words and Backtrack functions for find all possibilities.
-
 ### Boggle Game:
 ![Boggle-Game](https://raw.githubusercontent.com/Abolfazl2647/Boggle-Game/master/public/image/boggle-game.png)
 

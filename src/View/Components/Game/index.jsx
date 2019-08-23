@@ -3,17 +3,6 @@ import { connect } from 'react-redux';
 import Trie from '../../../Controller/Trie.js';
 import BoggleActions from '../../../ViewModel/actions/boggle_actions';
 import './Game.scss';
-
-import { CustomGesture, moves } from 'react-touch';
-import { parse } from 'handlebars';
-
-const CIRCLE = [
-	moves.UP,
-	moves.RIGHT,
-	moves.DOWN,
-	moves.LEFT
-];
-
 class Game extends Component {
 	constructor(props){
 		super(props);
@@ -232,7 +221,7 @@ class Game extends Component {
 				<div className="answer-list">
 					<p>کلمات یافت شده:</p>
 					{this.props.userAnswers ? this.props.userAnswers.map((item,index) => {
-						return <span key={index}><i className="fa fa-tag" aria-hidden="true"></i><span>{item.string}</span></span>
+						return <span className="user-words" key={index}><i className="fa fa-tag" aria-hidden="true"></i><span>{item.string}</span></span>
 					}): null}
 				</div>
 			</div>

@@ -89,18 +89,18 @@ $margin:5px;
             margin: 0 0 10px 0;
         }
 
-        span {
+        span.user-words {
 
             float: right;
-            margin-left: 10px;
             text-align: center;
             display: inline-block;
             color: lightseagreen;
+            font-size:12px;
+            margin-left: 5px;
 
             span { 
                 float: right;
                 color: #fc8a96;
-                margin-right: 3px;
                 line-height: 30px;
             }
             

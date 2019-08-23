@@ -5,8 +5,6 @@ const initialState = {
     answerIds:[],
     userAnswers:[],
     tableValues:[],
-    selectedPath:[],
-    selectedIds:[],
     Answers:[],
     string: "",
     gameResult: "",
