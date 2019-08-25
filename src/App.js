@@ -14,14 +14,14 @@ class Boggle extends Component {
 		this.playGame = this.playGame.bind(this);
 		this.RunTimer = this.RunTimer.bind(this);
 
-		this.timer = 10;
+		this.timer = 150;
 		this.timeInterval = null;
 	}
 
 	ToggleModal(bool) { this.props.toggle_modal(bool) }
 
 	playGame() {
-		this.timer = 10;
+		this.timer = 150;
 		let RandomValues = Helper.generate_random_aplphabet();
 		let availableAnswers = Helper.find_answer(RandomValues);
 		// we need at least ten word to be found
