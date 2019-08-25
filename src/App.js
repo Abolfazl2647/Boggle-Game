@@ -5,7 +5,8 @@ import Helper from './Controller/helper.js';
 import { connect } from 'react-redux';
 import BoggleActions from './ViewModel/actions/boggle_actions';
 import './App.scss';
-// TODO: remove Duplication 
+// TODO: CPU pick up
+// Hard - Medium - Easy
 class Boggle extends Component {
 
 	constructor() {
