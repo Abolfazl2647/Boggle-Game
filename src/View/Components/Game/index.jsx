@@ -45,7 +45,7 @@ class Game extends Component {
 
 	start(item,pos) {
 		this.draging = true;
-		if ( this.props.winingStatus ) return;
+		if ( this.props.winingStatus < 0) return;
 		let string = this.props.string;
 			string += item.value;
 			this.selectedIds.push(item.id);
@@ -55,7 +55,7 @@ class Game extends Component {
 
 	handleMouseEnter(item,goingPos) {
 		if (!this.draging) return;
-		if (this.props.winingStatus) return;
+		if (this.props.winingStatus < 0) return;
 		if (this.allowDirection(goingPos)) {
 			
 			let string = this.props.string;
@@ -103,6 +103,7 @@ class Game extends Component {
 	}
 
 	touch_start(event) {
+		if ( this.props.winingStatus < 0) return;
 		let element = document.elementFromPoint(event.touches[0].clientX, event.touches[0].clientY);
 		let classList = element.classList.value.split(" ");
 		if (classList.indexOf('cell') === -1 ) return;
@@ -113,7 +114,6 @@ class Game extends Component {
 		}
 
 		this.draging = true;
-		if ( this.props.winingStatus ) return;
 		let string = this.props.string;
 			string += element.innerText;
 			this.selectedIds.push(element.dataset.id);
@@ -122,7 +122,7 @@ class Game extends Component {
 	}
 
 	touch_move(event) {
-		// console.log(event.touches)
+		if (this.props.winingStatus < 0) return;
 		let element = document.elementFromPoint(event.touches[0].clientX, event.touches[0].clientY);
 		let classList = element.classList.value.split(" ");
 		if (classList.indexOf('cell') === -1 ) return;
@@ -131,12 +131,7 @@ class Game extends Component {
 			row: parseInt(element.dataset.row),
 			col: parseInt( element.dataset.col)
 		}
-	
 
-		console.log(this.allowDirection(goingPos))
-
-		if (!this.draging) return;
-		if (this.props.winingStatus) return;
 		if (this.allowDirection(goingPos)) {
 
 			let string = this.props.string;
@@ -150,8 +145,6 @@ class Game extends Component {
 				this.selectedIds.push(element.dataset.id);
 				this.selectedPath.push(goingPos);
 			}
-
-			console.log(string);
 			this.props.swipe({string});
 		}
 	}
@@ -192,8 +185,8 @@ class Game extends Component {
 						<span>کلمات موجود:</span>
 						<span className="num">{this.props.Answers ? this.props.Answers.length : null}</span>
 					</label>
-					<p className={(this.props.winingStatus ? " win " : " loose ") + "currentString"}>
-						{(this.props.clock === "0:00") ? (this.props.winingStatus) ? "برنده شدید" :  " باختی " : this.props.string}
+					<p className={(this.props.winingStatus > 0? " win " : " loose ") + "currentString"}>
+						{(this.props.winingStatus !== 0) ? (this.props.winingStatus > 0) ? "برنده شدید" :  " باختی " : this.props.string}
 					</p>
 					<label className="clock">
 						<span className="num">{this.props.clock}</span>
@@ -208,7 +201,7 @@ class Game extends Component {
 
 						return (
 							<div data-row={row} data-col={col} data-id={item.id} className={
-								(this.props.clock === "0:00" ? this.props.winingStatus ? " win " : "loose" : "") +
+								(this.props.winingStatus !== 0 ? this.props.winingStatus > 0 ? " win " : "loose" : "") +
 								(this.selectedIds.indexOf(item.id) !== -1 ? " active " : "") + " cell Amir"}
 								key={item.id}
 								unselectable="on"

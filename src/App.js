@@ -14,14 +14,14 @@ class Boggle extends Component {
 		this.playGame = this.playGame.bind(this);
 		this.RunTimer = this.RunTimer.bind(this);
 
-		this.timer = 150;
+		this.timer = 10;
 		this.timeInterval = null;
 	}
 
 	ToggleModal(bool) { this.props.toggle_modal(bool) }
 
 	playGame() {
-		this.timer = 150;
+		this.timer = 10;
 		let RandomValues = Helper.generate_random_aplphabet();
 		let availableAnswers = Helper.find_answer(RandomValues);
 		// we need at least ten word to be found
@@ -48,13 +48,14 @@ class Boggle extends Component {
 			let min = parseInt(this.timer / 60);
 			let sec = this.timer % 60;
 			if ( sec < 10 ) sec = "0"+sec;
-			if ( !this.props.winingStatus ) {
+			if ( this.props.winingStatus === 0) {
 				this.props.updateClock(min+":"+sec);
 				if ( this.timer === 0) {
-					this.props.toggle_wining_status(false);
+					this.props.toggle_wining_status(-1);
+					this.props.updateClock("00:00");
 					clearTimeout(this.timeInterval);
 				}
-			}	
+			}
 		},1000);
 	}
 

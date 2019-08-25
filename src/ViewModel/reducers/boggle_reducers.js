@@ -8,7 +8,7 @@ const initialState = {
     Answers:[],
     string: "",
     gameResult: "",
-    winingStatus: false,
+    winingStatus: 0,
     help_visibility:false,
 }
 
@@ -37,7 +37,7 @@ const BoggleGame = (state = initialState , action ) => {
             return {
                 ...state,
                 clock:"0:00",
-                winingStatus: true,
+                winingStatus: -1,
             }
 		} else {
             return {
