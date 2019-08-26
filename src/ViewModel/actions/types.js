@@ -1,7 +1,9 @@
 export const SWIPE = 'SWIPE';
 export const NEW_GAME = 'NEW_GAME';
 export const TOUCH_END = 'TOUCH_END';
+export const VIEW_CHANGE = 'VIEW_CHANGE';
 export const TOUCH_START = 'TOUCH_START';
+export const LANG_CHANGE = 'LANG_CHANGE';
 export const TOGGLE_MODAL = 'TOGGLE_MODAL';
 export const CLOCK_UPDATE = 'CLOCK_UPDATE';
 export const GAME_FINISHED = 'GAME_FINISHED';

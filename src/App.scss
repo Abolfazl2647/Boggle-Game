@@ -42,6 +42,7 @@ body {
 
     .App {
 
+        position: relative;
         height: 100%;
         
         .container,.row,.col-4,.col-8 {
@@ -52,75 +53,27 @@ body {
 
     .Views-Wrapper {
 
+        @include center-absolute;
         max-width: 300px;
+        min-height: 380px;
         width: 300px;
         display: block;
         margin: 0 auto;
+        overflow: hidden;
 
         .Views {
 
+            min-height: inherit;
             width: 600px;
             height: auto;
-        }
-    }
+            display: block;
+            @include transition(all ease .5s);
 
-    .Menu {
-
-        margin: 0 auto;
-        margin-top: 2em;
-        max-width: 300px;
-
-        nav {
-
-            height: 100%;
-
-            ul.actions {
-
-                padding: 0;
-                margin: 0;
-                list-style: none;
-
-                li {  display: inline-block; }
-
-                li:nth-child(1) { float: left; }
-                li:nth-child(1) { float: right; }
-            }
-    
-            button {
-    
-                cursor: pointer;
-                background-color: #638de9;
-                padding: 5px 10px;
-                min-width: 130px;
-                color: #fff;
-                border: none;
-                outline: none;
-                font-size: 13px;
-                height: 40px;
-                margin: 5px;
-                @include border-radius(40px);
-    
-                span {
-                    float: right;
-                    height: 30px;
-                    margin-right: 10px;
-                    line-height: 30px !important;
-                }
-    
-                i {
-                    width: 30px;
-                    height: 30px;
-                    float: right;
-                    text-align: center;
-                    line-height: 30px !important;
-                    cursor: pointer;
-                    @include border-radius(100%);
-                    background-color: #567dd8;
-                }
+            &.game {
+                margin-left: -300px;
             }
         }
     }
-
 
 }
 

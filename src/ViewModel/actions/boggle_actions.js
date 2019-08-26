@@ -1,4 +1,4 @@
-import { NEW_GAME, TOGGLE_MODAL, CLOCK_UPDATE, TOGGLE_WINING_STATUS, TOUCH_START, TOUCH_END, SWIPE } from './types';
+import { NEW_GAME, TOGGLE_MODAL, CLOCK_UPDATE, TOGGLE_WINING_STATUS, TOUCH_START, TOUCH_END, SWIPE, VIEW_CHANGE, LANG_CHANGE } from './types';
 
 export default {
     new_game : (tableVlaues, answers) => (dispatch) => {
@@ -39,6 +39,18 @@ export default {
             type: TOUCH_END,
             peyload: {answerIds,userAnswers}
         });
+    },
+    set_view: (view) => (dispatch) => {
+        dispatch({
+            type: VIEW_CHANGE,
+            peyload: view
+        });
+    },
+    set_lang: (lang) => (dispatch) => {
+        dispatch({
+            type: LANG_CHANGE,
+            peyload: lang
+        })
     },
     swipe: (OBJ) => (dispatch) => {
         dispatch({

@@ -1,0 +1,32 @@
+{
+    "En": {
+        "language":"En",
+        "set_lang":"Language",
+        "game_name":"Boggle Game",
+        "easy" : "Easy",
+        "medium" : "Medium",
+        "hard" : "Hard",
+        "difficaulty" : "Choose Difficaulty Level",
+        "new_game" :"New Game",
+        "help":"Help",
+        "possibilities":"Possibilities",
+        "user_pickups":"Your Choosen Words",
+        "win":"Winner",
+        "loose":"Game Over"
+    },
+    "Fa": {
+        "language":"Fa",
+        "set_lang":"زبان",
+        "game_name":"بازی حدس کلمات",
+        "easy" : "بهشت",
+        "medium" : "برزخ",
+        "hard" : "جهنم",
+        "difficaulty" : "سختی را مشخص کنید.",
+        "new_game" :"بازی جدید",
+        "help":"راهنما",
+        "possibilities":"کلمات موجود",
+        "user_pickups":"کلمات انتخابی شما",
+        "win":"برنده شدید",
+        "loose":"باختی"
+    }
+}

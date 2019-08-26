@@ -1,0 +1,45 @@
+@import '../../../_mixins.scss';
+
+.Dificaulty-Level {
+
+    float: left;
+    margin: 0;
+    width: 300px;
+    height: auto;
+    min-height: inherit;
+    display: inline-block;
+    position: relative;
+
+    h1, p {
+        text-align: center;
+        justify-content: center;
+    }
+
+    h1 { color: #333333}
+    p {color: #999}
+
+    ul {
+        @include center-absolute;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        .menu-btn {
+            cursor: pointer;
+            padding: 5px 10px;
+            min-width: 130px;
+            color: #fff;
+            border: none;
+            outline: none;
+            font-size: 13px;
+            height: 40px;
+            margin: 5px;
+            @include border-radius(40px);
+
+            &.easy {background-color: #59c173; border: 1px solid #3cad58}
+            &.medium {background-color: #e5c702; border: 1px solid #a58f01}
+            &.hard {background-color: #e5606d; border: 1px solid #ad4049}
+            &.lang {background-color: #567dd8; border: 1px solid #567dd8}
+        }
+    }
+}

@@ -1,4 +1,4 @@
-import { NEW_GAME, TOGGLE_MODAL, CLOCK_UPDATE, TOGGLE_WINING_STATUS, TOUCH_START, TOUCH_END, SWIPE } from '../actions/types';
+import { NEW_GAME, TOGGLE_MODAL, CLOCK_UPDATE, TOGGLE_WINING_STATUS, TOUCH_START, TOUCH_END, SWIPE, VIEW_CHANGE, LANG_CHANGE } from '../actions/types';
 
 const initialState = {
     clock: null,
@@ -9,6 +9,8 @@ const initialState = {
     string: "",
     gameResult: "",
     winingStatus: 0,
+    view: false,
+    language: "Fa",
     help_visibility:false,
 }
 
@@ -17,7 +19,9 @@ const BoggleGame = (state = initialState , action ) => {
     if (action.type === NEW_GAME) {
         return {
             ...state,
-            ...initialState,
+            view: true,
+            answerIds:[],
+            userAnswers:[],
             Answers: action.peyload.answers,
             tableValues: action.peyload.tableVlaues,
         };
@@ -75,6 +79,20 @@ const BoggleGame = (state = initialState , action ) => {
         return {
             ...state,
             winingStatus: action.peyload
+        }
+    }
+
+    if (action.type === VIEW_CHANGE) {
+        return {
+            ...state,
+            view: action.peyload
+        }
+    }
+
+    if ( action.type === LANG_CHANGE ) {
+        return {
+            ...state,
+            language: action.peyload
         }
     }
     return state;

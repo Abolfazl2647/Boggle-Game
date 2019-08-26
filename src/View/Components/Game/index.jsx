@@ -103,6 +103,7 @@ class Game extends Component {
 	}
 
 	touch_start(event) {
+
 		if ( this.props.winingStatus < 0) return;
 		let element = document.elementFromPoint(event.touches[0].clientX, event.touches[0].clientY);
 		let classList = element.classList.value.split(" ");
@@ -122,6 +123,7 @@ class Game extends Component {
 	}
 
 	touch_move(event) {
+
 		if (this.props.winingStatus < 0) return;
 		let element = document.elementFromPoint(event.touches[0].clientX, event.touches[0].clientY);
 		let classList = element.classList.value.split(" ");
@@ -178,15 +180,27 @@ class Game extends Component {
 
 	render() {
 		let row=-1,col=0;
+		const {Lang , language } = this.props;
+		console.log(Lang, language);
 		return (
+		<React.Fragment>
+			
 			<div className="Game-Wrapper">
+				<div className="Menu">
+					<nav>
+						<ul className="actions">
+							<li><button className="new" onClick={this.props.playGame}><i className="fa fa-gamepad" aria-hidden="true"></i><span>{Lang[language].new_game}</span></button></li>
+							<li><button className="help" onClick={() => {this.props.toggle_modal(null)}}><i className="fa fa-exclamation" aria-hidden="true"></i><span>{Lang[language].help}</span></button></li>
+						</ul>
+					</nav>
+				</div>
 				<div className="Game-Header">
 					<label className="total-words">
-						<span>کلمات موجود:</span>
+						<span>{Lang[language].possibilities}</span>
 						<span className="num">{this.props.Answers ? this.props.Answers.length : null}</span>
 					</label>
 					<p className={(this.props.winingStatus > 0? " win " : " loose ") + "currentString"}>
-						{(this.props.winingStatus !== 0) ? (this.props.winingStatus > 0) ? "برنده شدید" :  " باختی " : this.props.string}
+						{(this.props.winingStatus !== 0) ? (this.props.winingStatus > 0) ? Lang[language].win :  Lang[language].loose : this.props.string}
 					</p>
 					<label className="clock">
 						<span className="num">{this.props.clock}</span>
@@ -198,11 +212,10 @@ class Game extends Component {
 						// makeing index for table
 						if( row >= 4 ){col++;row = 0;}else{ row++ };
 						let pos = {row,col};
-
 						return (
 							<div data-row={row} data-col={col} data-id={item.id} className={
 								(this.props.winingStatus !== 0 ? this.props.winingStatus > 0 ? " win " : "loose" : "") +
-								(this.selectedIds.indexOf(item.id) !== -1 ? " active " : "") + " cell Amir"}
+								(this.selectedIds.indexOf(item.id) !== -1 ? " active " : "") + " cell"}
 								key={item.id}
 								unselectable="on"
 								onMouseUp={this.end}
@@ -212,27 +225,28 @@ class Game extends Component {
 							}) : null}
 				</div>
 				<div className="answer-list">
-					<p>کلمات یافت شده:</p>
+					<p>{Lang[language].user_pickups}</p>
 					{this.props.userAnswers ? this.props.userAnswers.map((item,index) => {
 						return <span className="user-words" key={index}><i className="fa fa-tag" aria-hidden="true"></i><span>{item.string}</span></span>
 					}): null}
 				</div>
 			</div>
-		);
+		</React.Fragment>);
 	}
 }
 
 const mappropsToProps = (state) => {
 	return {
 		clock: state.Boggle.clock,
-		Answers: state.Boggle.Answers,
-		tableValues: state.Boggle.tableValues,
-		winingStatus: state.Boggle.winingStatus,
-		selectedIds: state.Boggle.selectedIds,
-		selectedPath: state.Boggle.selectedPath,
-		answerIds: state.Boggle.answerIds,
-		userAnswers: state.Boggle.userAnswers,
 		string: state.Boggle.string,
+		Answers: state.Boggle.Answers,
+		language: state.Boggle.language,
+		answerIds: state.Boggle.answerIds,
+		tableValues: state.Boggle.tableValues,
+		selectedIds: state.Boggle.selectedIds,
+		userAnswers: state.Boggle.userAnswers,
+		winingStatus: state.Boggle.winingStatus,
+		selectedPath: state.Boggle.selectedPath,
 		help_visibility: state.Boggle.help_visibility,
 	}
 }

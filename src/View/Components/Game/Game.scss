@@ -8,12 +8,70 @@ $margin:5px;
 .Game-Wrapper {
 
     position: relative;
+    min-height: inherit;
     height: 100%;
-    width: 100%;
+    width: 50%;
+    float: right;
     -webkit-user-select: none;
     -moz-user-select: -moz-none;
     -ms-user-select: none;
     user-select: none;
+    
+    .Menu {
+
+        display: block;
+        max-width: 300px;
+    
+        nav {
+    
+            height: 100%;
+    
+            ul.actions {
+    
+                padding: 0;
+                margin: 0;
+                list-style: none;
+    
+                li {  display: inline-block; }
+    
+                li:nth-child(1) { float: left; }
+                li:nth-child(1) { float: right; }
+            }
+    
+            button {
+    
+                cursor: pointer;
+                background-color: #638de9;
+                padding: 5px 10px;
+                min-width: 130px;
+                color: #fff;
+                border: none;
+                outline: none;
+                font-size: 13px;
+                height: 40px;
+                margin: 5px;
+                @include border-radius(40px);
+    
+                span {
+                    float: right;
+                    height: 30px;
+                    margin-right: 10px;
+                    line-height: 30px !important;
+                }
+    
+                i {
+                    width: 30px;
+                    height: 30px;
+                    float: right;
+                    text-align: center;
+                    line-height: 30px !important;
+                    cursor: pointer;
+                    @include border-radius(100%);
+                    background-color: #567dd8;
+                }
+            }
+        }
+    }
 
     .Game-Header {
 

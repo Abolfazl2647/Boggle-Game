@@ -1,29 +1,48 @@
 import React , { Component } from 'react';
-import Menu from './View/ComponentsMenu';
+import Menu from './View/Components/Menu';
 import Game from './View/Components/Game';
 import Modal from './View/Components/Help';
 import Helper from './Controller/helper.js';
+import Lang from './lang';
 import { connect } from 'react-redux';
 import BoggleActions from './ViewModel/actions/boggle_actions';
 import './App.scss';
 // TODO: CPU pick up
-// Hard - Medium - Easy
 class Boggle extends Component {
 
 	constructor() {
 		super();
-		this.ToggleModal = this.ToggleModal.bind(this);
+		
 		this.playGame = this.playGame.bind(this);
 		this.RunTimer = this.RunTimer.bind(this);
+		this.setLang = this.setLang.bind(this);
+		this.handleDifficaulty = this.handleDifficaulty.bind(this);
 
-		this.timer = 150;
+		this.level = {
+			timer: 600,
+			difficaulty: null,
+		};
 		this.timeInterval = null;
 	}
 
-	ToggleModal(bool) { this.props.toggle_modal(bool) }
+	setLang(lang) {
+		this.props.set_lang(lang);
+	}
+
+	handleDifficaulty(level) {
+		this.level.difficaulty = level;
+		if ( level === 'HEAVEN' ) {
+			this.level.timer = 600;
+		} else if ( level === 'HEAVEN_TO_HELL' ) {
+			this.level.timer = 300;
+		} else if ( level === 'HELL_TO_HELL' ) {
+			this.level.timer = 150;
+		}
+		this.playGame();
+		// this.props.set_view(true);
+	}
 
 	playGame() {
-		this.timer = 150;
 		let RandomValues = Helper.generate_random_aplphabet();
 		let availableAnswers = Helper.find_answer(RandomValues);
 		// we need at least ten word to be found
@@ -39,20 +58,20 @@ class Boggle extends Component {
 		}
 		
 		this.RunTimer();
-		this.props.new_game(RandomValues , uniqueNames);
+		this.props.new_game(RandomValues , uniqueNames, true);
 	}
 
 	RunTimer() {
 		
 		clearTimeout(this.timeInterval);
 		this.timeInterval = setInterval(() => {
-			this.timer--;
-			let min = parseInt(this.timer / 60);
-			let sec = this.timer % 60;
+			this.level.timer--;
+			let min = parseInt(this.level.timer / 60);
+			let sec = this.level.timer % 60;
 			if ( sec < 10 ) sec = "0"+sec;
 			if ( this.props.winingStatus === 0) {
 				this.props.updateClock(min+":"+sec);
-				if ( this.timer === 0) {
+				if ( this.level.timer === 0) {
 					this.props.toggle_wining_status(-1);
 					this.props.updateClock("00:00");
 					clearTimeout(this.timeInterval);
@@ -61,27 +80,20 @@ class Boggle extends Component {
 		},1000);
 	}
 
-	componentDidMount() {this.playGame(); }
 	componentWillUnmount() { clearTimeout(this.timeInterval); }
 
 	render() {
 		return (
 			<div className="App">
-				<div className={((this.props.help_visibility) ? " blur " : "" )}>
-					<div className="Menu">
-						<nav>
-							<ul className="actions">
-								<li><button className="new" onClick={this.playGame}><i className="fa fa-gamepad" aria-hidden="true"></i><span> بازی جدید </span></button></li>
-								<li><button className="help" onClick={() => {this.ToggleModal(null)}}><i className="fa fa-exclamation" aria-hidden="true"></i><span> راهنما </span></button></li>
-							</ul>
-						</nav>
-					</div>
-					<div className="views">
-						<Menu />
-						<Game />
+				<div className={((this.props.help_visibility) ? " blur " : "" ) + " App-Content "}>
+					<div className="Views-Wrapper">
+						<div className={( (this.props.view) ? "game" : '')+" Views"}>
+							<Menu Lang={Lang} language={this.props.language} setLang={this.setLang} difficaulty={this.handleDifficaulty}/>
+							<Game Lang={Lang} playGame={this.playGame}/>
+						</div>
 					</div>
 				</div>
-				<Modal />
+				<Modal Lang={Lang} />
 			</div>
 		);
 	}
@@ -94,7 +106,9 @@ const mappropsToProps = (state) => {
 		Answers: state.Boggle.Answers,
 		help_visibility: state.Boggle.help_visibility,
 		winingStatus: state.Boggle.winingStatus,
-		clock: state.Boggle.clock
+		clock: state.Boggle.clock,
+		view: state.Boggle.view,
+		language: state.Boggle.language
 	}
 }
 
