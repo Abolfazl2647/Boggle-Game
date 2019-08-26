@@ -1,4 +1,5 @@
 import React , { Component } from 'react';
+import Menu from './View/ComponentsMenu';
 import Game from './View/Components/Game';
 import Modal from './View/Components/Help';
 import Helper from './Controller/helper.js';
@@ -75,7 +76,10 @@ class Boggle extends Component {
 							</ul>
 						</nav>
 					</div>
-					<Game />
+					<div className="views">
+						<Menu />
+						<Game />
+					</div>
 				</div>
 				<Modal />
 			</div>

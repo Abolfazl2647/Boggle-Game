@@ -49,6 +49,21 @@ body {
         }
     }
 
+
+    .Views-Wrapper {
+
+        max-width: 300px;
+        width: 300px;
+        display: block;
+        margin: 0 auto;
+
+        .Views {
+
+            width: 600px;
+            height: auto;
+        }
+    }
+
     .Menu {
 
         margin: 0 auto;
