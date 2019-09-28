@@ -20,6 +20,8 @@ class Boggle extends Component {
 
 		this.level = {
 			timer: 600,
+			score: 10,
+			maxWords: 5,
 			difficaulty: null,
 		};
 		this.timeInterval = null;
@@ -33,36 +35,42 @@ class Boggle extends Component {
 		this.level.difficaulty = level;
 		if ( level === 'HEAVEN' ) {
 			this.level.timer = 600;
+			this.level.maxWords = 5;
+			this.level.score = 20;
 		} else if ( level === 'HEAVEN_TO_HELL' ) {
 			this.level.timer = 300;
+			this.level.maxWords = 10;
+			this.level.score = 20;
 		} else if ( level === 'HELL_TO_HELL' ) {
 			this.level.timer = 150;
+			this.level.maxWords = 15;
+			this.level.score = 50;
 		}
 		this.playGame();
 		// this.props.set_view(true);
 	}
 
 	playGame() {
-		let RandomValues = Helper.generate_random_aplphabet();
-		let availableAnswers = Helper.find_answer(RandomValues);
+		const RandomValues = Helper.generate_random_aplphabet();
+		const availableAnswers = Helper.find_answer(RandomValues);
 		// we need at least ten word to be found
 		// remove duplicate data
-		var uniqueNames = [];
-		availableAnswers.forEach((item) => {
-			if ( uniqueNames.indexOf(item) === -1) uniqueNames.push(item);
-		});
 
-		if ( uniqueNames.length < 10 ) {
+		let total = 0;
+		for ( let i=0; i < availableAnswers.length ; i++ ) {
+			total += availableAnswers[i].length;
+		}
+
+		if (availableAnswers.length < this.level.maxWords || total < this.level.score) {
 			this.playGame();
 			return;
 		}
-		
+			
 		this.RunTimer();
-		this.props.new_game(RandomValues , uniqueNames, true);
+		this.props.new_game(RandomValues , availableAnswers, true);
 	}
 
 	RunTimer() {
-		
 		clearTimeout(this.timeInterval);
 		this.timeInterval = setInterval(() => {
 			this.level.timer--;

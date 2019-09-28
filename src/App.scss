@@ -45,6 +45,8 @@ body {
         position: relative;
         height: 100%;
         
+        .App-Content {height: 100%;}
+
         .container,.row,.col-4,.col-8 {
             height: 100%;
         }

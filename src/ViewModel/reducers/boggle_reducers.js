@@ -20,8 +20,11 @@ const BoggleGame = (state = initialState , action ) => {
         return {
             ...state,
             view: true,
+            string: "",
             answerIds:[],
             userAnswers:[],
+            gameResult: "",
+            winingStatus: 0,
             Answers: action.peyload.answers,
             tableValues: action.peyload.tableVlaues,
         };

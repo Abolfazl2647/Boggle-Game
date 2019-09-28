@@ -34,7 +34,7 @@ export default {
     
             if ( Trie.find(iString).length > 1) {
                 if ( Trie.contains(iString) ) {
-                    final_answers.push(iString);
+                    if ( final_answers.indexOf(iString) === -1) final_answers.push(iString);
                 }
     
                 if ( row-1 >= 0  && !self.visited[row-1][col]) {

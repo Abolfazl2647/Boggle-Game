@@ -12,21 +12,23 @@
         "possibilities":"Possibilities",
         "user_pickups":"Your Choosen Words",
         "win":"Winner",
-        "loose":"Game Over"
+        "loose":"Game Over",
+        "back":"Back"
     },
     "Fa": {
         "language":"Fa",
         "set_lang":"زبان",
         "game_name":"بازی حدس کلمات",
-        "easy" : "بهشت",
-        "medium" : "برزخ",
-        "hard" : "جهنم",
+        "easy" : "آسان",
+        "medium" : "معمولی",
+        "hard" : "سخت",
         "difficaulty" : "سختی را مشخص کنید.",
         "new_game" :"بازی جدید",
         "help":"راهنما",
         "possibilities":"کلمات موجود",
         "user_pickups":"کلمات انتخابی شما",
         "win":"برنده شدید",
-        "loose":"باختی"
+        "loose":"باختی",
+        "back":"بازگشت"
     }
 }

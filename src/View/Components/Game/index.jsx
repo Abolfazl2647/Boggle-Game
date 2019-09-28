@@ -181,13 +181,13 @@ class Game extends Component {
 	render() {
 		let row=-1,col=0;
 		const {Lang , language } = this.props;
-		console.log(Lang, language);
 		return (
 		<React.Fragment>
 			
 			<div className="Game-Wrapper">
 				<div className="Menu">
 					<nav>
+						<button className="new" onClick={()=> {this.props.set_view(false)}}>{Lang[language].back}</button>
 						<ul className="actions">
 							<li><button className="new" onClick={this.props.playGame}><i className="fa fa-gamepad" aria-hidden="true"></i><span>{Lang[language].new_game}</span></button></li>
 							<li><button className="help" onClick={() => {this.props.toggle_modal(null)}}><i className="fa fa-exclamation" aria-hidden="true"></i><span>{Lang[language].help}</span></button></li>
